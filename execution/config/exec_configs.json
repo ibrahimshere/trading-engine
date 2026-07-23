@@ -1012,7 +1012,7 @@
       }
     }
   },
-  "ALPHA-V1-APEX": {
+  "ALPHA_V1-B": {
     "enabled": true,
     "max_open_contracts": 20,
     "webhooks": [],

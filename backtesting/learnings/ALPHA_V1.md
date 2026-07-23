@@ -71,7 +71,7 @@ specifically taxes sprint-sized runner days (historical median withdrawn: SPRINT
 vs SPLIT5 $250 $11.6k). **Apex operating band: current five split legs at flat $200-250,
 withdraw max every eligible Friday.** Base-hit singles menus are dominated under every frame.
 
-### ALPHA-V1-APEX Execution Profile (2026-07-22)
+### ALPHA_V1-B Execution Profile (2026-07-22)
 
 **Simplification update (same day): the live profile is now STATIC — flat $250/leg,
 $375 single-cap, hard 20-micro contract cap (`max_open_contracts=20`), no `adaptive_risk`
@@ -88,7 +88,7 @@ flatten mid-day (historical worst day at $250 flat was ~-$651, so this is rare).
 
 Original adaptive implementation (dormant, for reference):
 
-Execution profile added: `ALPHA-V1-APEX` in `execution/config/exec_configs.json` (dry-run,
+Execution profile added: `ALPHA_V1-B` in `execution/config/exec_configs.json` (dry-run,
 `webhooks=[]`). Same five legs and exits as `ALPHA_V1-A`; sizing is adaptive via the new
 `execution/src/trader/adaptive_risk.py` (`AdaptiveRiskManager`), wired into both ORB and LSI
 engines and tested in `execution/tests/test_adaptive_risk.py`.
@@ -112,7 +112,7 @@ Operating notes (updated 2026-07-22, DB-first state): trades post to the main DB
 
     curl -X POST http://143.110.148.234:8100/api/payouts \
       -H 'Content-Type: application/json' \
-      -d '{"payout": {"config_name": "ALPHA-V1-APEX", "date": "2026-08-15", "amount": 1500}}'
+      -d '{"payout": {"config_name": "ALPHA_V1-B", "date": "2026-08-15", "amount": 1500}}'
 
 The config-level `adaptive_risk.payouts` list still works and merges with DB rows (dedupe
 on date+amount); prefer the DB. Use `balance_override` if engine-tracked balance drifts
