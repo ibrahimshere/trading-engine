@@ -1016,40 +1016,6 @@
     "enabled": true,
     "max_open_contracts": 20,
     "webhooks": [],
-    "adaptive_risk": {
-      "enabled": true,
-      "anchor": {
-        "date": "2026-07-22",
-        "balance": 50000.0
-      },
-      "payouts": [],
-      "balance_override": null,
-      "tiers": [
-        {
-          "profit_below": 1500.0,
-          "risk_scale": 0.8,
-          "max_open_contracts": 20
-        },
-        {
-          "profit_below": 3000.0,
-          "risk_scale": 1.0,
-          "max_open_contracts": 30
-        },
-        {
-          "profit_below": 6000.0,
-          "risk_scale": 1.0,
-          "max_open_contracts": 40
-        }
-      ],
-      "default_tier": {
-        "risk_scale": 1.0,
-        "max_open_contracts": 40
-      },
-      "consistency": {
-        "best_day_frac": 0.5,
-        "blocked_risk_scale": 0.5
-      }
-    },
     "sessions": {
       "NQ_NY": {
         "orb_start": "09:30",

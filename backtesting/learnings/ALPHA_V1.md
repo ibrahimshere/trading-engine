@@ -73,6 +73,21 @@ withdraw max every eligible Friday.** Base-hit singles menus are dominated under
 
 ### ALPHA-V1-APEX Execution Profile (2026-07-22)
 
+**Simplification update (same day): the live profile is now STATIC — flat $250/leg,
+$375 single-cap, hard 20-micro contract cap (`max_open_contracts=20`), no `adaptive_risk`
+block.** Rationale: 20 micros is the Apex 50K Tier-1 floor and tier caps only grow, so a
+permanent 20-micro cap can never violate any tier; at $250 flat, concurrency exceeds 20
+micros on only 4.7% of days (the cap manager sizes the overflow down); and the policy sweep
+showed consistency barely binds at this sizing. This removes all balance-tracking dependence
+from the trade path. The `AdaptiveRiskManager` code below remains implemented, tested, and
+available — re-enable by adding the `adaptive_risk` block back to the profile. The payouts
+DB table remains as bookkeeping (and for any future adaptive variant) but the engine no
+longer depends on it. Residual live consideration: the Tier-1 intraday DLL ($1,000) is
+enforced by Apex, not modeled engine-side; a multi-leg loss day can exceed it and Apex will
+flatten mid-day (historical worst day at $250 flat was ~-$651, so this is rare).
+
+Original adaptive implementation (dormant, for reference):
+
 Execution profile added: `ALPHA-V1-APEX` in `execution/config/exec_configs.json` (dry-run,
 `webhooks=[]`). Same five legs and exits as `ALPHA_V1-A`; sizing is adaptive via the new
 `execution/src/trader/adaptive_risk.py` (`AdaptiveRiskManager`), wired into both ORB and LSI
