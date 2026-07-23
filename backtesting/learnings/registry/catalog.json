@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T15:50:55.374815Z",
+  "generated_at": "2026-07-10T14:56:23.326521Z",
   "paths": {
     "readme": "backtesting/learnings/README.md",
     "global_brief": "backtesting/learnings/briefs/GLOBAL.md",
@@ -8,8 +8,8 @@
   },
   "overview": {
     "asset_histories": 8,
-    "report_files": 263,
-    "result_directories": 410,
+    "report_files": 270,
+    "result_directories": 418,
     "result_loose_files": 45
   },
   "assets": {
@@ -2205,6 +2205,11 @@
           "status_bucket": "CONDITIONAL"
         },
         {
+          "title": "NY Selective VWAP Regime Discovery (2026-07-10) \u2014 CHALLENGER, opening-efficiency gate leads",
+          "status": "CHALLENGER only. Abandoning the one-trade-per-day requirement produced a materially stronger selective branch, but it did not clear the deflated-Sharpe promotion gate and remains `post_filter_only`. No live/dry implementation is authorized.",
+          "status_bucket": "STRONG"
+        },
+        {
           "title": "NY VWAP Static 1:1.5R Stop Sweep (2026-06-30) \u2014 CONDITIONAL cadence improvement, still thin",
           "status": "CONDITIONAL research screen only. Static fixed `1.5R` exits improved the high-cadence VWAP leg versus the dynamic VWAP target, but the daily-cadence edge remains thin and still `research_only`.",
           "status_bucket": "CONDITIONAL"
@@ -2228,6 +2233,31 @@
           "title": "NY VWAP 3m Sweep + BOS Confirmation (2026-06-30) \u2014 NO-GO for cadence, possible sparse micro-sleeve",
           "status": "NO-GO as an upgrade to the current 3m daily-cadence leg. BOS confirmation after the sweep/reclaim improves selectivity on a few tiny samples, but it removes too many trades to solve the 1-3 trades/day objective.",
           "status_bucket": "NO-GO"
+        },
+        {
+          "title": "NY VWAP 3m Validation + Prop Packet (2026-07-10) \u2014 NO-GO for daily cadence; long-only shelf candidate",
+          "status": "NO-GO for promotion of the both-direction daily-cadence branch. Long-only remains `research_only` as a conditional lower-frequency shelf candidate, but it also failed the tightened rolling, bootstrap, and prop-quality gates. No live-native implementation was made.",
+          "status_bucket": "NO-GO"
+        },
+        {
+          "title": "NY VWAP 3m Context-Gate Rescue (2026-07-10) \u2014 CONDITIONAL long-only survivor, shorts closed",
+          "status": "CONDITIONAL `research_only` survivor. The 5m-branch context gates partially rescue the deferred 3m leg, but only long-only and only as a fragile low-frequency candidate. Short side is closed.",
+          "status_bucket": "CONDITIONAL"
+        },
+        {
+          "title": "NY VWAP 3m Limit-Entry Cost Sweep (2026-07-10) \u2014 NO-GO for limit entries, keep market entry",
+          "status": "NO-GO for limit-entry replacement on the gated 3m long-only survivor. Market entry at next 3m bar open stays the recommended entry.",
+          "status_bucket": "NO-GO"
+        },
+        {
+          "title": "NY ORB Failure Fade Discovery (2026-07-10) \u2014 NO-GO, thesis closed",
+          "status": "NO-GO. The ORB failure-fade mirror thesis (fade failed opening-range breakouts back into the range) has no exploitable edge on NQ NY.",
+          "status_bucket": "NO-GO"
+        },
+        {
+          "title": "NY VWAP Sleeve Regime Switch (2026-07-10) \u2014 CONDITIONAL trend-extension guard adopted, vol floors rejected",
+          "status": "CONDITIONAL. Best available causal deactivation rule for the low-frequency VWAP sleeve's cold-window blocker; the sleeve remains a recent-regime candidate \u2014 the guard removes cold drawdown, it does not make 2016-2021 tradable.",
+          "status_bucket": "CONDITIONAL"
         },
         {
           "title": "Summary",
@@ -2316,15 +2346,23 @@
         }
       ],
       "status_counts": {
-        "NO-GO": 9,
+        "NO-GO": 12,
         "UNSPECIFIED": 23,
-        "CONDITIONAL": 19,
+        "CONDITIONAL": 21,
         "SUPERSEDED": 2,
         "OPTIMIZATION_COMPLETE": 1,
         "GO": 3,
-        "INVALIDATED_OR_CORRUPT": 3
+        "INVALIDATED_OR_CORRUPT": 3,
+        "STRONG": 1
       },
       "reports": [
+        {
+          "name": "NQ_ASIA_TIER1_TIER3_EXACT_COMPARE_20260702.md",
+          "path": "backtesting/learnings/reports/NQ_ASIA_TIER1_TIER3_EXACT_COMPARE_20260702.md",
+          "slug": "nq_asia_tier1_tier3_exact_compare_20260702",
+          "mtime_utc": "2026-07-02T14:56:09.589427Z",
+          "matched_result_directory": "backtesting/data/results/nq_asia_tier1_tier3_exact_compare_20260702"
+        },
         {
           "name": "NQ_ENTRY_MODE_INVERSION_TIMING_READ.md",
           "path": "backtesting/learnings/reports/NQ_ENTRY_MODE_INVERSION_TIMING_READ.md",
@@ -3033,6 +3071,13 @@
           "matched_result_directory": "backtesting/data/results/nq_ny_lsi_sweep_reclaim_velocity_20260515"
         },
         {
+          "name": "NQ_NY_ORB_FAILURE_FADE_DISCOVERY_20260710.md",
+          "path": "backtesting/learnings/reports/NQ_NY_ORB_FAILURE_FADE_DISCOVERY_20260710.md",
+          "slug": "nq_ny_orb_failure_fade_discovery_20260710",
+          "mtime_utc": "2026-07-10T14:26:18.924252Z",
+          "matched_result_directory": "backtesting/data/results/nq_ny_orb_failure_fade_discovery_20260710"
+        },
+        {
           "name": "NQ_NY_REFERENCE_LSI_3M_FAILURE_ANALYSIS.md",
           "path": "backtesting/learnings/reports/NQ_NY_REFERENCE_LSI_3M_FAILURE_ANALYSIS.md",
           "slug": "nq_ny_reference_lsi_3m_failure_analysis",
@@ -3173,11 +3218,32 @@
           "matched_result_directory": "backtesting/data/results/nq_ny_vwap_3m_bos_challenger_20260630"
         },
         {
+          "name": "NQ_NY_VWAP_3M_CONTEXT_GATE_RESCUE_20260710.md",
+          "path": "backtesting/learnings/reports/NQ_NY_VWAP_3M_CONTEXT_GATE_RESCUE_20260710.md",
+          "slug": "nq_ny_vwap_3m_context_gate_rescue_20260710",
+          "mtime_utc": "2026-07-10T14:30:13.485058Z",
+          "matched_result_directory": "backtesting/data/results/nq_ny_vwap_3m_context_gate_rescue_20260710"
+        },
+        {
+          "name": "NQ_NY_VWAP_3M_LIMIT_ENTRY_COST_SWEEP_20260710.md",
+          "path": "backtesting/learnings/reports/NQ_NY_VWAP_3M_LIMIT_ENTRY_COST_SWEEP_20260710.md",
+          "slug": "nq_ny_vwap_3m_limit_entry_cost_sweep_20260710",
+          "mtime_utc": "2026-07-10T14:53:47.886735Z",
+          "matched_result_directory": "backtesting/data/results/nq_ny_vwap_3m_limit_entry_cost_sweep_20260710"
+        },
+        {
           "name": "NQ_NY_VWAP_3M_SWEEP_BOS_CONFIRM_20260630.md",
           "path": "backtesting/learnings/reports/NQ_NY_VWAP_3M_SWEEP_BOS_CONFIRM_20260630.md",
           "slug": "nq_ny_vwap_3m_sweep_bos_confirm_20260630",
           "mtime_utc": "2026-06-30T15:41:48.231440Z",
           "matched_result_directory": "backtesting/data/results/nq_ny_vwap_3m_sweep_bos_confirm_20260630"
+        },
+        {
+          "name": "NQ_NY_VWAP_3M_VALIDATION_PROP_PACKET_20260710.md",
+          "path": "backtesting/learnings/reports/NQ_NY_VWAP_3M_VALIDATION_PROP_PACKET_20260710.md",
+          "slug": "nq_ny_vwap_3m_validation_prop_packet_20260710",
+          "mtime_utc": "2026-07-10T14:09:45.734571Z",
+          "matched_result_directory": "backtesting/data/results/nq_ny_vwap_3m_validation_prop_packet_20260710"
         },
         {
           "name": "NQ_NY_VWAP_BOS_TIMEFRAME_CHALLENGER_20260630.md",
@@ -3206,6 +3272,20 @@
           "slug": "nq_ny_vwap_reversion_fixed_rr_pipeline_20260629",
           "mtime_utc": "2026-06-29T19:01:30.898564Z",
           "matched_result_directory": "backtesting/data/results/nq_ny_vwap_reversion_fixed_rr_pipeline_20260629"
+        },
+        {
+          "name": "NQ_NY_VWAP_SELECTIVE_REGIME_DISCOVERY_20260710.md",
+          "path": "backtesting/learnings/reports/NQ_NY_VWAP_SELECTIVE_REGIME_DISCOVERY_20260710.md",
+          "slug": "nq_ny_vwap_selective_regime_discovery_20260710",
+          "mtime_utc": "2026-07-10T14:32:14.798020Z",
+          "matched_result_directory": "backtesting/data/results/nq_ny_vwap_selective_regime_discovery_20260710"
+        },
+        {
+          "name": "NQ_NY_VWAP_SLEEVE_REGIME_SWITCH_20260710.md",
+          "path": "backtesting/learnings/reports/NQ_NY_VWAP_SLEEVE_REGIME_SWITCH_20260710.md",
+          "slug": "nq_ny_vwap_sleeve_regime_switch_20260710",
+          "mtime_utc": "2026-07-10T14:29:37.301034Z",
+          "matched_result_directory": "backtesting/data/results/nq_ny_vwap_sleeve_regime_switch_20260710"
         },
         {
           "name": "NQ_NY_VWAP_STATIC_RR_STOP_SWEEP_20260630.md",
@@ -3311,6 +3391,22 @@
             "asia_lsi_combo_details.json",
             "asia_lsi_combo_ranking.csv",
             "asia_lsi_combo_ranking_practical.csv"
+          ],
+          "assets": [
+            "NQ"
+          ]
+        },
+        {
+          "name": "nq_asia_tier1_tier3_exact_compare_20260702",
+          "path": "backtesting/data/results/nq_asia_tier1_tier3_exact_compare_20260702",
+          "mtime_utc": "2026-07-02T14:56:09.587210Z",
+          "file_count": 10,
+          "primary_files": [
+            "summary.json",
+            "correlations.csv",
+            "exact_alpha_rr3_tp1_2r.json",
+            "exact_alpha_rr6_incumbent.json",
+            "exact_metrics.csv"
           ],
           "assets": [
             "NQ"
@@ -4848,6 +4944,22 @@
           ]
         },
         {
+          "name": "nq_ny_orb_failure_fade_discovery_20260710",
+          "path": "backtesting/data/results/nq_ny_orb_failure_fade_discovery_20260710",
+          "mtime_utc": "2026-07-10T14:26:18.885701Z",
+          "file_count": 11,
+          "primary_files": [
+            "summary.json",
+            "discovery_grid_ranked.csv",
+            "frozen_tf5_15m_brk0_N4_buf0.02_breakout_extreme0.05_orb_mid_cut1200_cold_trades.csv",
+            "frozen_tf5_15m_brk0_N4_buf0.02_breakout_extreme0.05_orb_mid_cut1200_discovery_trades.csv",
+            "frozen_tf5_15m_brk0_N4_buf0.02_breakout_extreme0.05_orb_mid_cut1200_validation_trades.csv"
+          ],
+          "assets": [
+            "NQ"
+          ]
+        },
+        {
           "name": "nq_ny_orb_gap_orderbook_bucket_screen_20260610",
           "path": "backtesting/data/results/nq_ny_orb_gap_orderbook_bucket_screen_20260610",
           "mtime_utc": "2026-06-10T12:57:27.010635Z",
@@ -5123,6 +5235,38 @@
           ]
         },
         {
+          "name": "nq_ny_vwap_3m_context_gate_rescue_20260710",
+          "path": "backtesting/data/results/nq_ny_vwap_3m_context_gate_rescue_20260710",
+          "mtime_utc": "2026-07-10T14:26:27.226444Z",
+          "file_count": 8,
+          "primary_files": [
+            "summary.json",
+            "baseline_trades.csv",
+            "context_gate_grid.csv",
+            "finalist_details.csv",
+            "finalist_friction_1s.csv"
+          ],
+          "assets": [
+            "NQ"
+          ]
+        },
+        {
+          "name": "nq_ny_vwap_3m_limit_entry_cost_sweep_20260710",
+          "path": "backtesting/data/results/nq_ny_vwap_3m_limit_entry_cost_sweep_20260710",
+          "mtime_utc": "2026-07-10T14:53:05.352129Z",
+          "file_count": 7,
+          "primary_files": [
+            "summary.json",
+            "best_per_variant_1s_mixed.csv",
+            "entry_variant_grid.csv",
+            "paired_deltas_1s_mixed.csv",
+            "top_combo_per_signal_1s.csv"
+          ],
+          "assets": [
+            "NQ"
+          ]
+        },
+        {
           "name": "nq_ny_vwap_3m_sweep_bos_confirm_20260630",
           "path": "backtesting/data/results/nq_ny_vwap_3m_sweep_bos_confirm_20260630",
           "mtime_utc": "2026-06-30T15:41:48.224677Z",
@@ -5133,6 +5277,22 @@
             "baseline_sweep_reclaim_yearly.csv",
             "best_by_direction_scope.csv",
             "daily_cadence_rows.csv"
+          ],
+          "assets": [
+            "NQ"
+          ]
+        },
+        {
+          "name": "nq_ny_vwap_3m_validation_prop_packet_20260710",
+          "path": "backtesting/data/results/nq_ny_vwap_3m_validation_prop_packet_20260710",
+          "mtime_utc": "2026-07-10T14:05:12.099266Z",
+          "file_count": 11,
+          "primary_files": [
+            "summary.json",
+            "baseline_trades.csv",
+            "block_bootstrap.csv",
+            "friction_summary.csv",
+            "path_replay_summary.csv"
           ],
           "assets": [
             "NQ"
@@ -5194,6 +5354,38 @@
           "primary_files": [
             "summary.json",
             "coarse_screen.csv"
+          ],
+          "assets": [
+            "NQ"
+          ]
+        },
+        {
+          "name": "nq_ny_vwap_selective_regime_discovery_20260710",
+          "path": "backtesting/data/results/nq_ny_vwap_selective_regime_discovery_20260710",
+          "mtime_utc": "2026-07-10T14:32:14.786770Z",
+          "file_count": 16,
+          "primary_files": [
+            "summary.json",
+            "baseline_controls.csv",
+            "day_mid_full_trades_with_features.csv",
+            "feature_bin_diagnostics.csv",
+            "finalist_1s_trades.csv"
+          ],
+          "assets": [
+            "NQ"
+          ]
+        },
+        {
+          "name": "nq_ny_vwap_sleeve_regime_switch_20260710",
+          "path": "backtesting/data/results/nq_ny_vwap_sleeve_regime_switch_20260710",
+          "mtime_utc": "2026-07-10T14:29:37.299169Z",
+          "file_count": 6,
+          "primary_files": [
+            "daily_features.csv",
+            "dist_sma200_threshold_sweep.csv",
+            "feature_comparison.csv",
+            "full_history_year_split.csv",
+            "prop_lifecycle_switch.csv"
           ],
           "assets": [
             "NQ"
@@ -7239,6 +7431,20 @@
           "exact_trades.csv",
           "ranked_summary.csv",
           "window_metrics.csv"
+        ],
+        "assets": []
+      },
+      {
+        "name": "alpha_v1a_single_tp1_exact_compare_20260708",
+        "path": "backtesting/data/results/alpha_v1a_single_tp1_exact_compare_20260708",
+        "mtime_utc": "2026-07-08T14:50:56.354008Z",
+        "file_count": 8,
+        "primary_files": [
+          "summary.json",
+          "ALPHA_V1-A-SINGLE-TP1_raw_result.json",
+          "ALPHA_V1-A-SINGLE-TP1_trades.csv",
+          "ALPHA_V1-A_raw_result.json",
+          "ALPHA_V1-A_trades.csv"
         ],
         "assets": []
       },

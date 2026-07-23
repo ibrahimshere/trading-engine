@@ -451,6 +451,16 @@ class LSIEngine:
         self._limit_signal_bar = None
         self._clear_dashboard_overlay()
 
+    def _adaptive_risk_scale(self) -> float:
+        manager = getattr(self, "adaptive_risk", None)
+        if manager is None:
+            return 1.0
+        try:
+            return float(manager.risk_scale())
+        except Exception:
+            logger.exception("[%s] adaptive risk scale failed; using 1.0x", self.name)
+            return 1.0
+
     def _dynamic_sizing_decision(
         self,
         *,
@@ -2169,11 +2179,12 @@ class LSIEngine:
         )
 
         from .sizing import TradeLevels as TL, _floor_to_step
-        qty_raw = self.risk_usd / (risk_pts * self.point_value) if risk_pts > 0 else 0
+        risk_scale = self._adaptive_risk_scale()
+        qty_raw = (self.risk_usd * risk_scale) / (risk_pts * self.point_value) if risk_pts > 0 else 0
         qty = _floor_to_step(qty_raw, self.qty_step)
         if qty < self.min_qty:
             single_risk = risk_pts * self.point_value * self.min_qty
-            if single_risk <= self.max_single_risk_usd:
+            if single_risk <= self.max_single_risk_usd * risk_scale:
                 qty = self.min_qty
             else:
                 self._log_trade("ENTRY_REJECTED", "risk too high for 1 contract: risk=%.2f" % single_risk)

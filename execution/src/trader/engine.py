@@ -1779,7 +1779,18 @@ class ORBEngine:
                     return False
             return True
 
+    def _adaptive_risk_scale(self) -> float:
+        manager = getattr(self, "adaptive_risk", None)
+        if manager is None:
+            return 1.0
+        try:
+            return float(manager.risk_scale())
+        except Exception:
+            logger.exception("[%s] adaptive risk scale failed; using 1.0x", self.name)
+            return 1.0
+
     def _compute_setup_levels(self, *, entry: float, direction: int, gap_size: float) -> TradeLevels | None:
+        risk_scale = self._adaptive_risk_scale()
         return compute_trade_levels(
             entry=entry,
             direction=direction,
@@ -1788,7 +1799,7 @@ class ORBEngine:
             stop_atr_pct=self.stop_atr_pct,
             rr=self.rr,
             tp1_ratio=self.tp1_ratio,
-            risk_usd=self.risk_usd,
+            risk_usd=self.risk_usd * risk_scale,
             point_value=self.point_value,
             min_qty=self.min_qty,
             qty_step=self.qty_step,
@@ -1799,7 +1810,7 @@ class ORBEngine:
             stop_orb_pct=self.stop_orb_pct,
             min_stop_pts=self.min_stop_pts,
             min_tp1_pts=self.min_tp1_pts,
-            max_single_risk_usd=self.max_single_risk_usd,
+            max_single_risk_usd=self.max_single_risk_usd * risk_scale,
             wide_stop_target_threshold_points=self.wide_stop_target_threshold_points,
             wide_stop_target_rr=self.wide_stop_target_rr,
             exit_mode=self.exit_mode,

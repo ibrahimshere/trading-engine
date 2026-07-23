@@ -946,6 +946,7 @@ class ExecutionConfig:
     webhooks: list[WebhookEntry] = field(default_factory=list)
     session_overrides: dict[str, dict] = field(default_factory=dict)
     lsi_session_overrides: dict[str, dict] = field(default_factory=dict)
+    adaptive_risk: dict | None = None
 
     @property
     def webhook_url(self) -> str:
@@ -1120,6 +1121,7 @@ def load_exec_configs(
                 webhooks=remote["webhooks"] if name in remote_configs else base_webhooks,
                 session_overrides=remote_config.get("sessions", data.get("sessions", {})),
                 lsi_session_overrides=remote_config.get("lsi_sessions", data.get("lsi_sessions", {})),
+                adaptive_risk=data.get("adaptive_risk"),
             ))
         if configs:
             return configs
@@ -1733,6 +1735,7 @@ async def run_live(config: dict, api_host: str = "127.0.0.1", api_port: int = 80
 
     # Build engines per execution config
     engines_by_config: dict[str, list] = {}
+    adaptive_managers: dict[str, "AdaptiveRiskManager"] = {}
     brokers: list[TradersPostClient] = []
     global_symbol_map: dict[str, list] = {}
     global_atr_lengths: dict[str, set[int]] = {}
@@ -1821,6 +1824,18 @@ async def run_live(config: dict, api_host: str = "127.0.0.1", api_port: int = 80
         config_engines = engines + lsi_engines
         engines_by_config[ec.name] = config_engines
 
+        # Adaptive prop-firm risk scaling (tier sizing + consistency throttle)
+        if ec.adaptive_risk:
+            from .adaptive_risk import AdaptiveRiskManager
+            adaptive_manager = AdaptiveRiskManager(ec.name, ec.adaptive_risk)
+            adaptive_manager.bind_cap_manager(position_manager)
+            for engine in config_engines:
+                engine.adaptive_risk = adaptive_manager
+            adaptive_managers[ec.name] = adaptive_manager
+            logger.info(
+                "[%s] adaptive risk enabled: %s", ec.name, adaptive_manager.status(),
+            )
+
         # Merge into global maps (feed routes bars to ALL engines across all configs)
         for sym, eng_list in sym_map.items():
             global_symbol_map.setdefault(sym, []).extend(eng_list)
@@ -1886,10 +1901,22 @@ async def run_live(config: dict, api_host: str = "127.0.0.1", api_port: int = 80
         save_checkpoint(engines_by_config)
 
     # Wire callbacks into each engine (both ORBEngine and LSIEngine)
-    for engine in all_engines:
-        engine.on_state_change = dashboard.on_state_change
-        engine.on_trade_exit = dashboard.record_trade
-        engine.on_checkpoint = _request_checkpoint
+    def _make_trade_exit_handler(manager):
+        def _handler(record):
+            dashboard.record_trade(record)
+            try:
+                manager.record_trade(record)
+            except Exception:
+                logger.exception("[%s] adaptive risk record_trade failed", manager.config_name)
+        return _handler
+
+    for cfg_name, cfg_engines in engines_by_config.items():
+        manager = adaptive_managers.get(cfg_name)
+        on_exit = _make_trade_exit_handler(manager) if manager is not None else dashboard.record_trade
+        for engine in cfg_engines:
+            engine.on_state_change = dashboard.on_state_change
+            engine.on_trade_exit = on_exit
+            engine.on_checkpoint = _request_checkpoint
 
     # Wire G5 gate for NQ_LDN: skip when Asia hit TP1 the prior night.
     # Scoped per config — only checks trade_history from the same config.
@@ -2115,6 +2142,12 @@ async def run_live(config: dict, api_host: str = "127.0.0.1", api_port: int = 80
     dashboard.trade_history = load_trade_history()
     if dashboard.trade_history:
         logger.info("Restored %d trade(s) from history file", len(dashboard.trade_history))
+
+    # Seed adaptive risk managers from restored history (dedupes against saved state)
+    for manager in adaptive_managers.values():
+        manager.replay_history(dashboard.trade_history)
+        logger.info("[%s] adaptive risk after history replay: %s",
+                    manager.config_name, manager.status())
 
     # Restore checkpoint before time-based recovery.  Intraday recovery below can
     # repair stale FLAT checkpoints from a prior session, but must not overwrite

@@ -10,10 +10,10 @@ This is the short entrypoint for agent and LLM context loading.
 4. Open individual reports or result artifacts only when the brief or index points you there.
 
 ## Coverage
-- Strategy sections indexed: 60
-- Related reports indexed: 128
-- Related result directories indexed: 158
-- Status mix: CONDITIONAL: 19, GO: 3, INVALIDATED_OR_CORRUPT: 3, NO-GO: 9, OPTIMIZATION_COMPLETE: 1, SUPERSEDED: 2, UNSPECIFIED: 23
+- Strategy sections indexed: 66
+- Related reports indexed: 135
+- Related result directories indexed: 165
+- Status mix: CONDITIONAL: 21, GO: 3, INVALIDATED_OR_CORRUPT: 3, NO-GO: 12, OPTIMIZATION_COMPLETE: 1, STRONG: 1, SUPERSEDED: 2, UNSPECIFIED: 23
 
 ## Strategy Snapshot
 - `Plain NY ORB Breakout Seed Surface (2026-06-18) — NO-GO` -> `NO-GO — seed grid produced validation-looking winners, but none passed preholdout, cluster, PSR/DSR, or promotion gates.`
@@ -28,4 +28,4 @@ This is the short entrypoint for agent and LLM context loading.
 - `NY Continuation Short (20m ORB, short-only, 1s magnifier) — NO-GO` -> `NO-GO — best achievable config has 4 negative years, Calmar 1.40, PF 1.10. Edge is marginal and fragile to slippage.`
 - `NY Continuation Short v2 (25m ORB, short-only, 1s magnifier, dual floors) — CONDITIONAL` -> `CONDITIONAL — 4/5 pipeline phases pass. Phase 3 annual R FAIL (12R/yr threshold too aggressive for short-only ~33 trades/yr). All other phases pass strongly.`
 - `NY Continuation R20 (20m ORB, both, 1s magnifier) — CORRUPT (was GO)` -> `CORRUPT — all metrics pre-date TP1+BE same-bar exit bug fix (commit 6079ad4). tp1=0.3 makes this config heavily affected.`
-- ... plus 48 more entries in the [full NQ index](../../indexes/assets/NQ.md).
+- ... plus 54 more entries in the [full NQ index](../../indexes/assets/NQ.md).

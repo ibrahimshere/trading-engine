@@ -40,6 +40,62 @@ Live execution single-contract cap rule: each leg sets `max_single_risk_usd = 1.
 
 \* Fee-aware exact profile rerun for selected aggressive sprint `HTF $500 / NQ Asia $400 / ES Asia $150 / NQ R11 $250 / ES NY $300`: `82.6%` payout / `17.4%` breach / `41.1d` average payout in 2024, `73.1%` payout / `26.9%` breach / `20.8d` average payout in 2025, and partial `2026_YTD` had `3` payouts, `0` breaches, and `3` open accounts through `2026-03-24`.
 
+### Phase-Two (Post-First-Payout) Operating Mode (2026-07-22)
+
+Report: `backtesting/learnings/reports/ALPHA_V1_PHASE_TWO_PORTFOLIO_20260722.md`
+
+Once an account has taken first payout (locked $50k floor, ~$2k room, >=5 days of >=$250
+profit per payout cycle), the sprint risk menus above are too hot and base-hit single-target
+menus are a trap: at consistency-qualifying risk (>=$250/leg) every pure singles structure
+showed 50-88% one-year MC breach odds. Phase-2 default is the **same five legs and exits at
+flat $150 risk with banked-buffer withdrawals (trigger $53.0k, withdraw to $52.5k)**: 0%
+cohort breach, ~8% MC 1y breach full-window (~1% on 2025+), median ~$7.1k/yr withdrawn
+(~$12.4k/yr in the 2025+ regime). Conditional upgrade pending exact replay: swap ES Asia to
+single-target 1.25R at 1.3x leg risk (qualifying days 2.3 -> 2.9/mo, ~$9.3k/yr, 11.3% MC
+breach with the $53k buffer). Expect a 5-qualifying-day cycle to take ~6-9 weeks at $150 flat.
+
+Churn-ROI addendum (same report): if accounts are treated as $300 disposable leverage instead
+of preserved assets, every menu is 15-80x positive EV per account and extraction rate scales
+with risk: the live SPRINT menu earns ~$13.4k/slot-yr (MC, ~$23.5k on 2025+) with first
+withdrawal ~30d and ~1.5 accounts churned/yr; SPRINT x1.5 reaches ~$21k/slot-yr with first
+withdrawal ~20d. Beyond ~x1.5 the median historical account extracts $0 (tail-carried EV) —
+treat x1-x1.5 sprint with withdraw-max policy as the churn-mode operating band. Base-hit
+single-target menus are dominated in the churn frame as well.
+
+Apex-exact addendum (same report, supersedes the generic churn read for Apex accounts): the
+50K EOD PA has a 6-payout lifetime cap ($13k max extraction), per-payout caps ($1.5k-$3k),
+a 50% best-day consistency gate, tier-based DLL ($1k-$3k intraday) and contract caps
+(20-40 micros), and a threshold lock at $50,100. Under these rules EV/account converges
+(~$4-7k) and the objective becomes completion probability x speed. The 50% consistency rule
+specifically taxes sprint-sized runner days (historical median withdrawn: SPRINT x1 $2.8k
+vs SPLIT5 $250 $11.6k). **Apex operating band: current five split legs at flat $200-250,
+withdraw max every eligible Friday.** Base-hit singles menus are dominated under every frame.
+
+### ALPHA-V1-APEX Execution Profile (2026-07-22)
+
+Execution profile added: `ALPHA-V1-APEX` in `execution/config/exec_configs.json` (dry-run,
+`webhooks=[]`). Same five legs and exits as `ALPHA_V1-A`; sizing is adaptive via the new
+`execution/src/trader/adaptive_risk.py` (`AdaptiveRiskManager`), wired into both ORB and LSI
+engines and tested in `execution/tests/test_adaptive_risk.py`.
+
+Rules implemented:
+- **Tier sizing** (base `risk_usd=$250`, `max_single=$375`, both scaled): profit < $1.5k ->
+  0.8x ($200) with a 20-micro cap; $1.5k-$3k -> 1.0x with 30 micros; >= $3k -> 1.0x with 40
+  micros. The profile's `ContractCapManager` cap follows the tier automatically.
+- **Consistency throttle**: while the best profitable day since the last approved payout is
+  >= 50% of cycle net profit, risk scales a further 0.5x until the gate clears.
+- **Account state**: tracked from the profile's own closed trades (net PnL by ET date),
+  anchored at `anchor` (date + balance) in the config block; payouts are recorded by
+  appending `{date, amount}` to `adaptive_risk.payouts` (this resets the consistency cycle
+  and lowers balance/tier, mirroring Apex). State persists to
+  `execution/config/adaptive_risk_state.json` and re-seeds from trade history on restart.
+
+Operating notes: on each approved Apex payout, append the payout to the profile's
+`payouts` list and restart/reload; use `balance_override` if engine-tracked balance drifts
+from the real account. Historical exact replay does not apply adaptive scaling (account
+state is lifecycle-dependent); validate sizing behavior in dry-run logs, then promote by
+adding webhooks per the usual acceptance flow.
+
 ### Risk Combination Suggestions
 
 These are operating risk menus. The 2026-05-07 fee-aware annual sim uses current `ALPHA_V1-A` exact profile replays with MNQ/MES fees at `$0.575` per contract per side and per-menu `max_single_risk_usd = 1.5 * risk_usd`.
@@ -302,6 +358,7 @@ Key MFE read: low full-TP rate is not automatically a reason to shorten every ta
 
 Promotion read:
 - **NQ Asia ORB** is the strongest target-compression candidate: `rr=3.0 / TP1=2.0R` improves full-history R from `+213.5R` to `+217.6R`, keeps PF essentially flat (`1.55` to `1.55`), raises full TP from `5.1%` to `22.7%`, cuts TP1-BE from `14.7%` to `8.6%`, and keeps recent 2y slightly better (`+53.2R` to `+54.8R`). DD worsens only `+0.43R` (`10.2R` to `10.6R`). This is the one target change worth exact replay.
+- **NQ Asia exact follow-up (2026-07-02)**: `rr=3.0 / TP1=2.0R` was exact-replayed through the execution engine and stitched into the five-leg payout model in `backtesting/learnings/reports/NQ_ASIA_TIER1_TIER3_EXACT_COMPARE_20260702.md`. It confirmed smoother target expression (`23.3%` full TP, `8.1%` TP1-BE) and slightly higher exact R (`+209.4R` vs `+203.9R` incumbent), but exact DD worsened (`-12.4R` vs `-8.8R`) and portfolio payout at NQ Asia `$400` improved only marginally (`39/19/1` vs `38/20/1`, max breach cluster still `6`). Treat as dry-run/shadow or sizing experiment, not a live replacement under strict promotion criteria.
 - **NQ NY HTF-LSI** has a smoother closer-target candidate: `rr=2.0 / TP1=1.4R` raises full TP from `6.2%` to `21.0%` and improves DD (`10.9R` to `10.0R`) while giving up only `-2.6R` full-history. It is plausible for a smoother payout profile, but because it is not an ORB leg and slightly reduces R, treat it as a secondary exact-replay candidate rather than an automatic replacement.
 - **ES Asia ORB** does not need compression. `rr=1.25 / TP1=1.0R` raises full TP (`21.7%` to `28.4%`) but loses `-7.9R` and worsens DD. Some farther-target rows improve full R slightly, which argues the current `rr=1.5` is already close enough rather than too far.
 - **ES_NY ORB** remains uncomfortable but not fixed by shorter TP2. Best loose closer row `rr=4.0 / TP1=1.0R` raises full TP only to `8.0%` while cutting `-13.6R`, lowering PF (`1.39` to `1.34`), and slightly worsening DD. Keep the current target if the leg stays active; solve live discomfort with risk sizing or gating, not target compression.
