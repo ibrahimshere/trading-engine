@@ -365,6 +365,10 @@ def _write_trade_to_db(record: "TradeRecord") -> None:
                     "ticker": trade_dict.get("ticker", ""),
                     "exec_ticker": trade_dict.get("exec_ticker", ""),
                     "leg": trade_dict.get("leg") or trade_dict["session"],
+                    "net_pnl_usd": trade_dict.get("net_pnl_usd"),
+                    "net_r_result": trade_dict.get("net_r_result"),
+                    "commission_usd": trade_dict.get("commission_usd"),
+                    "qty": trade_dict.get("qty"),
                     "notes": json.dumps(
                         {"entry_context": entry_context},
                         sort_keys=True,

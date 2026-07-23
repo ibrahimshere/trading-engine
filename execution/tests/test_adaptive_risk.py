@@ -153,6 +153,62 @@ class TestRecordingAndPersistence:
         assert m.profit() == pytest.approx(0.0)
 
 
+class TestDbSync:
+    def _db_trade(self, date, net, session="ES_NY", ts="2026-07-06T10:00:00-04:00"):
+        return {"date": date, "session": session, "exit_timestamp": ts,
+                "net_pnl_usd": net, "config_name": "APEX_TEST"}
+
+    def test_apply_db_state_rebuilds_daily_net(self, tmp_path):
+        m = make_manager(tmp_path)
+        m._apply_db_state(
+            [self._db_trade("20260706", 800.0),
+             self._db_trade("20260707", 700.0, ts="2026-07-07T10:00:00-04:00")],
+            [],
+        )
+        assert m.profit() == pytest.approx(1500.0)
+        assert m.max_open_contracts() == 30
+
+    def test_apply_db_state_replaces_stale_local_state(self, tmp_path):
+        m = make_manager(tmp_path)
+        m.record_trade(record("20260706", 9999.0))
+        m._apply_db_state([self._db_trade("20260706", 500.0)], [])
+        assert m.profit() == pytest.approx(500.0)
+
+    def test_replay_after_db_sync_dedupes_matching_keys(self, tmp_path):
+        m = make_manager(tmp_path)
+        ts = "2026-07-06T10:00:00-04:00"
+        m._apply_db_state([self._db_trade("20260706", 500.0, ts=ts)], [])
+        # same trade arriving via local history replay must not double-count
+        m.replay_history([FakeRecord(date="20260706", timestamp=ts, net_pnl_usd=500.0)])
+        assert m.profit() == pytest.approx(500.0)
+        # a trade the DB missed still gets added
+        m.replay_history([FakeRecord(date="20260707", timestamp="2026-07-07T11:00:00-04:00",
+                                     net_pnl_usd=250.0)])
+        assert m.profit() == pytest.approx(750.0)
+
+    def test_db_payouts_merge_and_reset_cycle(self, tmp_path):
+        m = make_manager(tmp_path)
+        m._apply_db_state(
+            [self._db_trade("20260706", 2000.0),
+             self._db_trade("20260709", 400.0, ts="2026-07-09T10:00:00-04:00")],
+            [{"date": "2026-07-08", "amount": 1500.0}],
+        )
+        # payout on 7/8 resets the cycle: only 7/9 counts, best day 400 blocks
+        assert m.balance() == pytest.approx(50000.0 + 2400.0 - 1500.0)
+        assert m.consistency_blocked()
+
+    def test_rows_without_net_pnl_skipped(self, tmp_path):
+        m = make_manager(tmp_path)
+        row = self._db_trade("20260706", None)
+        m._apply_db_state([row], [])
+        assert m.profit() == pytest.approx(0.0)
+
+    def test_rows_before_anchor_ignored(self, tmp_path):
+        m = make_manager(tmp_path)
+        m._apply_db_state([self._db_trade("20260601", 5000.0)], [])
+        assert m.profit() == pytest.approx(0.0)
+
+
 class TestCapManagerSync:
     def test_tier_up_raises_cap(self, tmp_path):
         m = make_manager(tmp_path)

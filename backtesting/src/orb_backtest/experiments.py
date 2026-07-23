@@ -400,6 +400,18 @@ CREATE INDEX IF NOT EXISTS idx_execution_config_webhooks_config
     ON execution_config_webhooks(config_name);
 """
 
+_PAYOUTS_SCHEMA = """\
+CREATE TABLE IF NOT EXISTS payouts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    config_name TEXT NOT NULL,
+    date TEXT NOT NULL,
+    amount REAL NOT NULL,
+    notes TEXT,
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_payouts_config ON payouts(config_name);
+"""
+
 _REGIME_REPORTS_SCHEMA = """\
 CREATE TABLE IF NOT EXISTS regime_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -445,6 +457,7 @@ def init_db() -> Path:
         conn.executescript(_EXECUTION_MAIN_LOGS_SCHEMA)
         conn.executescript(_EXECUTION_WEBHOOK_LOGS_SCHEMA)
         conn.executescript(_EXECUTION_CONFIGS_SCHEMA)
+        conn.executescript(_PAYOUTS_SCHEMA)
 
         # Migrate: add live execution display fields if missing
         live_existing = {row[1] for row in conn.execute("PRAGMA table_info(live_trades)").fetchall()}
@@ -453,6 +466,10 @@ def init_db() -> Path:
             "ticker": "TEXT",
             "exec_ticker": "TEXT",
             "leg": "TEXT",
+            "net_pnl_usd": "REAL",
+            "net_r_result": "REAL",
+            "commission_usd": "REAL",
+            "qty": "REAL",
         }
         for col, dtype in live_new_cols.items():
             if col not in live_existing:
@@ -2029,8 +2046,9 @@ def log_live_trade(trade: dict) -> int:
             INSERT INTO live_trades
                 (timestamp, session, date, direction, entry_price, stop_price,
                  tp1_price, tp2_price, exit_type, tp1_hit, exit_timestamp,
-                 config_name, r_result, entry_timestamp, ticker, exec_ticker, leg, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 config_name, r_result, entry_timestamp, ticker, exec_ticker, leg, notes,
+                 net_pnl_usd, net_r_result, commission_usd, qty)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             [
                 datetime.now(timezone.utc).isoformat(),
@@ -2051,9 +2069,56 @@ def log_live_trade(trade: dict) -> int:
                 trade.get("exec_ticker"),
                 trade.get("leg") or trade["session"],
                 trade.get("notes"),
+                trade.get("net_pnl_usd"),
+                trade.get("net_r_result"),
+                trade.get("commission_usd"),
+                trade.get("qty"),
             ],
         )
         return cur.lastrowid
+
+
+def log_payout(payout: dict) -> int:
+    """Insert a prop-firm payout record. Returns the rowid."""
+    init_db()
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.execute(
+            """\
+            INSERT INTO payouts (config_name, date, amount, notes, created_at)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            [
+                payout["config_name"],
+                payout["date"],
+                float(payout["amount"]),
+                payout.get("notes"),
+                datetime.now(timezone.utc).isoformat(),
+            ],
+        )
+        return cur.lastrowid
+
+
+def list_payouts(config_name: str = "") -> list[dict]:
+    """List payout records, optionally filtered by config name."""
+    init_db()
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        if config_name:
+            rows = conn.execute(
+                "SELECT * FROM payouts WHERE config_name = ? ORDER BY date, id",
+                [config_name],
+            ).fetchall()
+        else:
+            rows = conn.execute("SELECT * FROM payouts ORDER BY date, id").fetchall()
+        return [dict(row) for row in rows]
+
+
+def delete_payout(payout_id: int) -> bool:
+    """Delete a payout record. Returns True if a row was removed."""
+    init_db()
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.execute("DELETE FROM payouts WHERE id = ?", [payout_id])
+        return cur.rowcount > 0
 
 
 def list_live_trades(

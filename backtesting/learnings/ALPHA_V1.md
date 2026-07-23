@@ -90,11 +90,22 @@ Rules implemented:
   and lowers balance/tier, mirroring Apex). State persists to
   `execution/config/adaptive_risk_state.json` and re-seeds from trade history on restart.
 
-Operating notes: on each approved Apex payout, append the payout to the profile's
-`payouts` list and restart/reload; use `balance_override` if engine-tracked balance drifts
-from the real account. Historical exact replay does not apply adaptive scaling (account
-state is lifecycle-dependent); validate sizing behavior in dry-run logs, then promote by
-adding webhooks per the usual acceptance flow.
+Operating notes (updated 2026-07-22, DB-first state): trades post to the main DB with
+`net_pnl_usd`, and the manager rebuilds balance/tier/consistency from the DB at boot
+(`sync_from_db`), with the local JSON state and 7-day trade history as fallback layers.
+**Record payouts via the main DB**, then restart the service:
+
+    curl -X POST http://143.110.148.234:8100/api/payouts \
+      -H 'Content-Type: application/json' \
+      -d '{"payout": {"config_name": "ALPHA-V1-APEX", "date": "2026-08-15", "amount": 1500}}'
+
+The config-level `adaptive_risk.payouts` list still works and merges with DB rows (dedupe
+on date+amount); prefer the DB. Use `balance_override` if engine-tracked balance drifts
+from the real account. The main DB (`/opt/main-db/main.db`) snapshots nightly to
+`/opt/backups/main-db/` (14-day rotation); off-box R2 upload pending credentials.
+Historical exact replay does not apply adaptive scaling (account state is
+lifecycle-dependent); validate sizing behavior in dry-run logs, then promote by adding
+webhooks per the usual acceptance flow.
 
 ### Risk Combination Suggestions
 

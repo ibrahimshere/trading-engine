@@ -2143,8 +2143,10 @@ async def run_live(config: dict, api_host: str = "127.0.0.1", api_port: int = 80
     if dashboard.trade_history:
         logger.info("Restored %d trade(s) from history file", len(dashboard.trade_history))
 
-    # Seed adaptive risk managers from restored history (dedupes against saved state)
+    # Seed adaptive risk managers: main DB is the durable source of truth,
+    # then local trade history fills any trades the async DB post missed.
     for manager in adaptive_managers.values():
+        manager.sync_from_db()
         manager.replay_history(dashboard.trade_history)
         logger.info("[%s] adaptive risk after history replay: %s",
                     manager.config_name, manager.status())

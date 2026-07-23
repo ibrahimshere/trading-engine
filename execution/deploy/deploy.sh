@@ -30,6 +30,7 @@ rsync -avz --delete \
     --exclude 'config/trade_history.json' \
     --exclude 'config/exec_configs.json' \
     --exclude 'config/overrides.json' \
+    --exclude 'config/adaptive_risk_state.json' \
     "$LOCAL_DIR/" "$DROPLET:$REMOTE_DIR/"
 
 echo "--- Installing dependencies ---"

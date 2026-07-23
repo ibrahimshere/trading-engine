@@ -169,6 +169,90 @@ class AdaptiveRiskManager:
         for record in records:
             self.record_trade(record)
 
+    # -- main DB sync (source of truth) --------------------------------------
+
+    def sync_from_db(self, db_url: str | None = None, timeout: float = 10.0) -> bool:
+        """Rebuild daily net PnL and payouts from the main DB.
+
+        The main DB holds the durable trade record (full history, unlike the
+        7-day local trade-history file) and the payouts ledger. On success the
+        local JSON state is replaced by the DB-derived state; on failure the
+        local state is kept and the manager logs a warning. Trades missing
+        from the DB (e.g. a failed async post) are recovered afterwards by
+        ``replay_history`` thanks to per-trade dedupe keys.
+        """
+        import json as _json
+        import urllib.request
+        from urllib.parse import urlencode
+
+        url_base = (db_url or os.environ.get("MAIN_DB_URL") or "http://127.0.0.1:8100").rstrip("/")
+        try:
+            params = urlencode({"config": self.config_name, "limit": 100_000})
+            with urllib.request.urlopen(
+                f"{url_base}/api/live-trades?{params}", timeout=timeout
+            ) as resp:
+                trades_payload = _json.loads(resp.read().decode())
+            with urllib.request.urlopen(
+                f"{url_base}/api/payouts?{urlencode({'config': self.config_name})}",
+                timeout=timeout,
+            ) as resp:
+                payouts_payload = _json.loads(resp.read().decode())
+        except Exception as exc:
+            logger.warning(
+                "[%s] adaptive risk: main DB sync failed (%s); using local state",
+                self.config_name, exc,
+            )
+            return False
+
+        trades = trades_payload.get("result") or []
+        db_payouts = payouts_payload.get("result") or []
+        self._apply_db_state(trades, db_payouts)
+        logger.info(
+            "[%s] adaptive risk: synced from main DB (%d trades, %d payouts): %s",
+            self.config_name, len(trades), len(db_payouts), self.status(),
+        )
+        return True
+
+    def _apply_db_state(self, trades: list[dict], db_payouts: list[dict]) -> None:
+        """Replace local state with DB-derived daily nets and merge payouts."""
+        daily: dict[str, float] = {}
+        seen: set[str] = set()
+        skipped = 0
+        for row in trades:
+            date = _compact_date(str(row.get("date") or ""))
+            if not date or date < self.anchor_date:
+                continue
+            net = row.get("net_pnl_usd")
+            if net is None:
+                skipped += 1
+                continue
+            key = f"{date}|{row.get('session', '')}|{row.get('exit_timestamp', '')}"
+            if key in seen:
+                continue
+            seen.add(key)
+            daily[date] = daily.get(date, 0.0) + float(net)
+        if skipped:
+            logger.warning(
+                "[%s] adaptive risk: %d DB trades since anchor lack net_pnl_usd and were skipped",
+                self.config_name, skipped,
+            )
+        self._daily_net = daily
+        self._seen = seen
+
+        merged = {(p["date"], p["amount"]) for p in self.payouts}
+        for row in db_payouts:
+            entry = {
+                "date": _compact_date(str(row.get("date") or "")),
+                "amount": float(row.get("amount") or 0.0),
+            }
+            if (entry["date"], entry["amount"]) not in merged:
+                merged.add((entry["date"], entry["amount"]))
+                self.payouts.append(entry)
+
+        self._save_state()
+        self._sync_cap_manager()
+        self._log_transition()
+
     # -- derived state ------------------------------------------------------
 
     def balance(self) -> float:

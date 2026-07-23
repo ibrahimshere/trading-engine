@@ -76,6 +76,9 @@ from orb_backtest.experiments import (
     get_live_trade,
     update_live_trade,
     delete_live_trade,
+    log_payout,
+    list_payouts,
+    delete_payout,
     log_execution_log,
     log_execution_logs_batch,
     list_execution_logs,
@@ -475,6 +478,31 @@ def update_live_trade_ep(trade_id: int, req: UpdateLiveTradeRequest):
 @app.delete("/api/live-trades/{trade_id}")
 def delete_live_trade_ep(trade_id: int):
     if not delete_live_trade(trade_id):
+        return fail("not found", 404)
+    return ok({"deleted": True})
+
+
+# --- Prop-firm payouts ---
+
+class LogPayoutRequest(BaseModel):
+    payout: dict
+
+@app.post("/api/payouts")
+def create_payout(req: LogPayoutRequest):
+    payout = req.payout
+    for field in ("config_name", "date", "amount"):
+        if not payout.get(field):
+            return fail(f"missing field: {field}", 400)
+    rowid = log_payout(payout)
+    return ok({"rowid": rowid})
+
+@app.get("/api/payouts")
+def get_payouts(config: str = ""):
+    return ok(list_payouts(config_name=config))
+
+@app.delete("/api/payouts/{payout_id}")
+def delete_payout_ep(payout_id: int):
+    if not delete_payout(payout_id):
         return fail("not found", 404)
     return ok({"deleted": True})
 

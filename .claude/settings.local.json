@@ -222,6 +222,10 @@
       "Bash(npm ci *)",
       "Bash(node -e ' *)",
       "Bash(node /tmp/dbg.mjs)"
+    ],
+    "ask": [
+      "Bash(ssh root@143.110.148.234:*)",
+      "Bash(scp:*)"
     ]
   }
 }
