@@ -198,39 +198,6 @@
       }
     }
   },
-  "ALPHA_V1-ES-NY-ATH-SHADOW": {
-    "enabled": false,
-    "max_open_contracts": 20,
-    "webhooks": [],
-    "sessions": {
-      "ES_NY": {
-        "orb_start": "09:30",
-        "orb_end": "09:45",
-        "entry_start": "09:45",
-        "entry_end": "13:00",
-        "flat_start": "15:50",
-        "flat_end": "16:00",
-        "stop_basis": "atr",
-        "gap_filter_basis": "atr",
-        "stop_atr_pct": 5.0,
-        "min_gap_atr_pct": 0.25,
-        "atr_length": 7,
-        "rr": 5.0,
-        "tp1_ratio": 0.2,
-        "risk_usd": 400,
-        "max_single_risk_usd": 400,
-        "long_only": true,
-        "excluded_dow": [
-          3
-        ],
-        "min_stop_pts": 3.0,
-        "min_tp1_pts": 3.0,
-        "ath_block_min_pct": 0.5,
-        "ath_block_max_pct": 0.75
-      }
-    },
-    "lsi_sessions": {}
-  },
   "ALPHA_V1-HUNTER-SAFE-025-SHADOW": {
     "enabled": false,
     "max_open_contracts": 5,
