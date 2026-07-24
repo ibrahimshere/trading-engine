@@ -833,6 +833,20 @@ Report: `backtesting/learnings/reports/PROMISING_ORB_CLOSE_ENTRY_PROBE.md`
 
 ---
 
+## ATH Gate: Retired (2026-07-23)
+
+The `ALPHA_V1-ES-NY-ATH-SHADOW` dry-run profile (ES_NY with the `0.5%-0.75%`
+below-ATH blocked band) was removed from `exec_configs.json` on 2026-07-23. Matched-window
+live comparison (2026-05-11 to 2026-07-22) showed the gate **never fired**: 16 trades,
+identical dates and outcomes to `ALPHA_V1-A` ES_NY, `+2.0R` both. The 5y exact compare
+blocked only 12 of 1,434 trades (~2.4/yr) for a `+2.25R` noise-level delta, and a power
+calculation puts statistical validation at ~65 blocked trades (~two decades of forward
+testing). Verdict: marginal by construction; do not promote into ALPHA_V1-A/B. Revisit only
+if ES sustains a grind inside the band (the gate would fire weekly instead of yearly).
+Historical shadow trades remain in the live DB under the old config name. Earlier in-session
+reads that showed the shadow outperforming live ES_NY were a window artifact (shadow started
+2026-05-11; the ALPHA comparison window started 2026-04-15).
+
 ## ATH Regime First Pass (2026-05-05)
 
 Report: `backtesting/learnings/reports/ALPHA_V1_ATH_REGIME_FIRST_PASS_20260505.md`
