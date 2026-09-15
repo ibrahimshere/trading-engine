@@ -907,10 +907,10 @@ def test_alpha_v1_c_is_disabled_conservative_clone_without_tracked_webhook():
     assert _without_sizing(aggressive.lsi_session_overrides) == _without_sizing(conservative.lsi_session_overrides)
     assert aggressive.session_overrides["NQ_NY"]["risk_usd"] == 400
     assert aggressive.session_overrides["NQ_NY"]["max_single_risk_usd"] == 600
-    assert aggressive.session_overrides["NQ_Asia"]["risk_usd"] == 250
-    assert aggressive.session_overrides["NQ_Asia"]["max_single_risk_usd"] == 375
-    assert aggressive.session_overrides["ES_Asia"]["risk_usd"] == 250
-    assert aggressive.session_overrides["ES_Asia"]["max_single_risk_usd"] == 375
+    assert aggressive.session_overrides["NQ_Asia"]["risk_usd"] == 400
+    assert aggressive.session_overrides["NQ_Asia"]["max_single_risk_usd"] == 600
+    assert aggressive.session_overrides["ES_Asia"]["risk_usd"] == 400
+    assert aggressive.session_overrides["ES_Asia"]["max_single_risk_usd"] == 600
     assert aggressive.session_overrides["ES_NY"]["risk_usd"] == 400
     assert aggressive.session_overrides["ES_NY"]["max_single_risk_usd"] == 600
     assert aggressive.lsi_session_overrides["NQ_NY_LSI"]["risk_usd"] == 400
