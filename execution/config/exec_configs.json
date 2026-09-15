@@ -89,8 +89,8 @@
         "atr_length": 12,
         "rr": 3.5,
         "tp1_ratio": 0.4,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "long_only": true,
         "excluded_dow": [
           4
@@ -112,8 +112,8 @@
         "atr_length": 5,
         "rr": 6.0,
         "tp1_ratio": 0.3,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "long_only": true,
         "excluded_dow": [
           1
@@ -139,8 +139,8 @@
         "atr_length": 14,
         "rr": 1.5,
         "tp1_ratio": 0.7,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "long_only": true,
         "min_stop_pts": 3.0,
         "min_tp1_pts": 3.0
@@ -159,8 +159,8 @@
         "atr_length": 7,
         "rr": 5.0,
         "tp1_ratio": 0.2,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "long_only": true,
         "excluded_dow": [
           3
@@ -181,8 +181,8 @@
         "tp1_ratio": 0.4,
         "min_gap_atr_pct": 3.0,
         "atr_length": 14,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "qty_multiplier": 1.0,
         "min_stop_points": 0.0,
         "fvg_window_left": 20,
@@ -998,8 +998,8 @@
         "atr_length": 12,
         "rr": 3.5,
         "tp1_ratio": 0.4,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "long_only": true,
         "excluded_dow": [
           4
@@ -1021,8 +1021,8 @@
         "atr_length": 5,
         "rr": 6.0,
         "tp1_ratio": 0.3,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "long_only": true,
         "excluded_dow": [
           1
@@ -1048,8 +1048,8 @@
         "atr_length": 14,
         "rr": 1.5,
         "tp1_ratio": 0.7,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "long_only": true,
         "min_stop_pts": 3.0,
         "min_tp1_pts": 3.0
@@ -1068,8 +1068,8 @@
         "atr_length": 7,
         "rr": 5.0,
         "tp1_ratio": 0.2,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "long_only": true,
         "excluded_dow": [
           3
@@ -1090,8 +1090,8 @@
         "tp1_ratio": 0.4,
         "min_gap_atr_pct": 3.0,
         "atr_length": 14,
-        "risk_usd": 250,
-        "max_single_risk_usd": 375,
+        "risk_usd": 400,
+        "max_single_risk_usd": 600,
         "qty_multiplier": 1.0,
         "min_stop_points": 0.0,
         "fvg_window_left": 20,
