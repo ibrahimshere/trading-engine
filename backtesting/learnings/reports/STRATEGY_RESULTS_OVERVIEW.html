@@ -112,7 +112,7 @@
 
     <div class="hero">
       <h2 style="margin-top:0">Verdict</h2>
-      <p>There is no single “the strategy.” A small ALPHA_V1 NQ/ES book is historically profitable on exact execution replay. Most ORB/LSI variants are NO-GO. Enabled execution profiles are dry-run only (empty webhooks).</p>
+      <p>There is no single “the strategy.” A small ALPHA_V1 NQ/ES book is historically profitable on exact execution replay. Most ORB/LSI variants are NO-GO. Production is LIVE: only <span class="mono">ALPHA_V1-A</span> has a webhook. Everything else on the feed is dry-run.</p>
       <div class="pills">
         <span class="pill">exact replay · ALPHA_V1-A last 5Y</span>
         <span class="pill">+275.1R gross / +213.4R net</span>
@@ -156,11 +156,15 @@
     </table>
     <p class="note">Longer exact compare (2016-04-17 to 2026-03-24): combined +445R exact vs +580R research. Last 1Y still +87.7R exact. Report: ALPHA_V1_LIVE_REPLAY_COMPARE_20260503.md.</p>
 
+    <h2>Live production results</h2>
+    <p class="muted">Full engine-fill history from the droplet, 2026-03-09 to 2026-09-23. Open <a href="./LIVE_EXECUTION_RESULTS.html">LIVE_EXECUTION_RESULTS.html</a> for the complete dump. ALPHA_V1-A: 167 trades, 2026-04-05 to 2026-09-22, WR 50.3%, PF 1.21, +16.75R, DD −7.39R.</p>
+
     <h2>Other HTML pages</h2>
-    <p class="muted">Council reports are the only other committed HTML. They are decision writeups, not the full experiment archive.</p>
+    <p class="muted">Council reports are decision writeups, not the full experiment archive.</p>
     <table>
       <thead><tr><th>Page</th><th>What it covers</th></tr></thead>
       <tbody>
+        <tr><td><a href="./LIVE_EXECUTION_RESULTS.html">Live execution results</a></td><td>Complete production trade table since 2026-03-09. Live ALPHA_V1-A vs dry FAST / TESTING / HOT_REGIME books.</td></tr>
         <tr><td><a href="./council-report-20260403-083956.html">2026-04-03 · Prop-firm payout farming</a></td><td>Keep NQ Asia ORB, ES Asia ORB, ES NY ORB, NQ NY LSI. Cut NQ Asia LSI, NQ NY ORB, GC NY ORB. This is the original ALPHA_V1 four-leg recommendation.</td></tr>
         <tr><td><a href="./council-report-20260403-093017.html">2026-04-03 · Candidate re-evaluation</a></td><td>Second pass over the research candidate list.</td></tr>
         <tr><td><a href="./council-report-20260403-144421.html">2026-04-03 · Discovery vs ALPHA_V1</a></td><td>Whether discovery legs should replace ALPHA_V1.</td></tr>
@@ -177,7 +181,7 @@
     <ul>
       <li><strong>Backtesting → Backtests</strong> — equity, stats, and trades for saved runs. This environment has the ALPHA_V1-A last-5Y exact replay loaded.</li>
       <li><strong>Backtesting → Saved / Optimizations / Coverage / Risk Engine / Regime</strong> — other research surfaces. Remote history needs auth; this local API only seeded the one exact book.</li>
-      <li><strong>Execution</strong> — live/dry status. Current enabled profiles have empty webhooks.</li>
+      <li><strong>Execution</strong> — live/dry status. Production ALPHA_V1-A has a live webhook; other enabled books are dry-run.</li>
     </ul>
 
     <h2>GO / NO-GO board (from asset briefs)</h2>
@@ -200,7 +204,7 @@
     <ul>
       <li>Future live fills, slippage, or Apex DLL flattening.</li>
       <li>That generic ORB+FVG is an edge. Most variants fail.</li>
-      <li>That current enabled profiles are sending live orders. They are not.</li>
+      <li>That current enabled profiles besides ALPHA_V1-A are sending live orders. They are not.</li>
       <li>The ~270 Markdown reports under <span class="mono">backtesting/learnings/reports/</span> are not HTML. Open those as source files if you need the long-form packets.</li>
     </ul>
   </div>

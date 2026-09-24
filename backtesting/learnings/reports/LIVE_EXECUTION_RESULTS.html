@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live execution results — gat.capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101010;
+      --bg-2: #161515;
+      --card: #181818;
+      --border: #3a3026;
+      --text: #f8e0b8;
+      --muted: #8a765b;
+      --gold: #ecc997;
+      --gold-dim: #b89358;
+      --good: #7fd895;
+      --bad: #ff7664;
+      --warn: #e8c088;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Sora, system-ui, sans-serif;
+      line-height: 1.55;
+    }
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { font-size: 2rem; margin: 0 0 8px; letter-spacing: -0.03em; }
+    h2 { font-size: 1.15rem; margin: 36px 0 12px; color: var(--gold); }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); }
+    .lede { font-size: 1.05rem; max-width: 48rem; color: var(--gold); }
+    .hero {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #201818 0%, var(--card) 100%);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .pill {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--gold-dim);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin: 12px 0 20px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 7px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    td.mono, .mono { font-family: "JetBrains Mono", monospace; }
+    .go { color: var(--good); }
+    .nogo { color: var(--bad); }
+    .grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      margin: 16px 0;
+    }
+    .stat {
+      border: 1px solid var(--border);
+      background: var(--bg-2);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .stat .k { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat .v { font-family: "JetBrains Mono", monospace; font-size: 1.2rem; margin-top: 6px; }
+    a { color: var(--gold); }
+    ul { margin: 0 0 16px 1.2rem; padding: 0; }
+    li { margin: 0 0 6px; }
+    .note {
+      border-left: 3px solid var(--gold-dim);
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="muted mono">gat.capital · live execution dump · fetched 2026-09-24 05:34 UTC</p>
+    <h1>Full live-engine results</h1>
+    <p class="lede">Production has been filling trades since 2026-03-09. This is the complete 1,679-trade history through 2026-09-23. Only ALPHA_V1-A is wired to a live webhook. Every other book is dry-run on the same live feed.</p>
+
+    <div class="hero">
+      <h2 style="margin-top:0">Live book: ALPHA_V1-A</h2>
+      <p>Five legs on one TradersPost account, currently $250/trade, micros. Engine fills, not a broker statement. Dollar PnL is only logged from July onward (62 of 167 trades).</p>
+      <div class="pills">
+        <span class="pill">167 trades</span>
+        <span class="pill">WR 50.3%</span>
+        <span class="pill">PF 1.21</span>
+        <span class="pill">+16.75R</span>
+        <span class="pill">DD -7.39R</span>
+        <span class="pill">max 5 losers in a row</span>
+        <span class="pill">2026-04-05 → 2026-09-22</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="stat"><div class="k">Trades</div><div class="v">167</div></div>
+      <div class="stat"><div class="k">Win rate</div><div class="v">50.3%</div></div>
+      <div class="stat"><div class="k">Profit factor</div><div class="v">1.21</div></div>
+      <div class="stat"><div class="k">Total R</div><div class="v go">+16.75</div></div>
+      <div class="stat"><div class="k">Avg R</div><div class="v">+0.100</div></div>
+      <div class="stat"><div class="k">Max DD</div><div class="v nogo">-7.39</div></div>
+      <div class="stat"><div class="k">Avg win / loss</div><div class="v">+1.16 / -0.97</div></div>
+      <div class="stat"><div class="k">USD (Jul–Sep logged)</div><div class="v go">$36.43</div></div>
+    </div>
+    <p class="muted">Exits: sl 80, tp1_tp2 29, tp1_be 27, eod 15, tp1_eod 14, tp1_single 2. Fees logged $409 on the USD subset. Since July: 81 trades, +6.74R, PF 1.17, USD $36.43.</p>
+
+    <h2>ALPHA_V1-A by month</h2>
+    <table>
+      <thead><tr><th>Month</th><th>Trades</th><th>Win rate</th><th>PF</th><th>R</th><th>DD</th><th>Max CL</th><th>USD</th></tr></thead>
+      <tbody>
+        <tr>
+      <td>2026-04</td>
+      <td class="mono">18</td>
+      <td>50.0%</td>
+      <td class="mono">0.86</td>
+      <td class="mono nogo">-1.29</td>
+      <td class="mono nogo">-5.50</td>
+      <td class="mono">5</td>
+      <td class="mono ">—</td>
+    </tr><tr>
+      <td>2026-05</td>
+      <td class="mono">38</td>
+      <td>60.5%</td>
+      <td class="mono">1.79</td>
+      <td class="mono go">+11.86</td>
+      <td class="mono nogo">-3.50</td>
+      <td class="mono">3</td>
+      <td class="mono ">—</td>
+    </tr><tr>
+      <td>2026-06</td>
+      <td class="mono">30</td>
+      <td>43.3%</td>
+      <td class="mono">0.97</td>
+      <td class="mono nogo">-0.57</td>
+      <td class="mono nogo">-7.39</td>
+      <td class="mono">5</td>
+      <td class="mono ">—</td>
+    </tr><tr>
+      <td>2026-07</td>
+      <td class="mono">25</td>
+      <td>48.0%</td>
+      <td class="mono">0.99</td>
+      <td class="mono nogo">-0.14</td>
+      <td class="mono nogo">-4.46</td>
+      <td class="mono">5</td>
+      <td class="mono nogo">$-342</td>
+    </tr><tr>
+      <td>2026-08</td>
+      <td class="mono">33</td>
+      <td>45.5%</td>
+      <td class="mono">0.98</td>
+      <td class="mono nogo">-0.37</td>
+      <td class="mono nogo">-4.83</td>
+      <td class="mono">4</td>
+      <td class="mono nogo">$-1,184</td>
+    </tr><tr>
+      <td>2026-09</td>
+      <td class="mono">23</td>
+      <td>52.2%</td>
+      <td class="mono">1.72</td>
+      <td class="mono go">+7.25</td>
+      <td class="mono nogo">-5.24</td>
+      <td class="mono">5</td>
+      <td class="mono go">$1,563</td>
+    </tr>
+      </tbody>
+    </table>
+    <p class="note">April was a 5-loss hole (−5.5R path). May printed +11.9R. June–August were roughly flat in R. September is the second green month (+7.3R / +$1,563). USD is blank before July because the DB did not store dollar PnL yet. August USD (−$1,184) is worse than August R (−0.37R) because live contract size was uneven across legs — same R stream as ALPHA_V1-B, different dollars.</p>
+
+    <h2>ALPHA_V1-A by leg</h2>
+    <table>
+      <thead><tr><th>Leg</th><th>Trades</th><th>WR</th><th>PF</th><th>R</th><th>Avg R</th><th>DD</th><th>USD</th><th>Span</th></tr></thead>
+      <tbody>
+        <tr>
+      <td>ES_Asia</td>
+      <td class="mono">66</td>
+      <td>56.1%</td>
+      <td class="mono">1.24</td>
+      <td class="mono go">+6.88</td>
+      <td class="mono">+0.104</td>
+      <td class="mono nogo">-4.00</td>
+      <td class="mono go">$717</td>
+      <td class="muted">2026-04-05 → 2026-09-22</td>
+    </tr><tr>
+      <td>ES_NY</td>
+      <td class="mono">34</td>
+      <td>47.1%</td>
+      <td class="mono">1.00</td>
+      <td class="mono ">+0.00</td>
+      <td class="mono">+0.000</td>
+      <td class="mono nogo">-4.00</td>
+      <td class="mono go">$54.20</td>
+      <td class="muted">2026-04-06 → 2026-09-16</td>
+    </tr><tr>
+      <td>NQ_Asia</td>
+      <td class="mono">31</td>
+      <td>38.7%</td>
+      <td class="mono">1.07</td>
+      <td class="mono go">+1.34</td>
+      <td class="mono">+0.043</td>
+      <td class="mono nogo">-7.00</td>
+      <td class="mono nogo">$-1,402</td>
+      <td class="muted">2026-04-09 → 2026-09-20</td>
+    </tr><tr>
+      <td>NQ_NY</td>
+      <td class="mono">22</td>
+      <td>54.5%</td>
+      <td class="mono">1.93</td>
+      <td class="mono go">+9.25</td>
+      <td class="mono">+0.421</td>
+      <td class="mono nogo">-4.30</td>
+      <td class="mono go">$1,130</td>
+      <td class="muted">2026-05-07 → 2026-09-16</td>
+    </tr><tr>
+      <td>NQ_NY_LSI</td>
+      <td class="mono">14</td>
+      <td>50.0%</td>
+      <td class="mono">0.87</td>
+      <td class="mono nogo">-0.73</td>
+      <td class="mono">-0.052</td>
+      <td class="mono nogo">-2.14</td>
+      <td class="mono nogo">$-461</td>
+      <td class="muted">2026-05-07 → 2026-09-08</td>
+    </tr>
+      </tbody>
+    </table>
+    <p class="muted">NQ NY ORB is the live R engine (+9.25R, PF 1.93). ES Asia is the volume engine (+6.88R on 66 trades). ES NY is dead flat. NQ Asia is barely green in R and red in dollars. HTF-LSI is slightly red on 14 trades.</p>
+
+    <h2>Every profile on the live feed</h2>
+    <p class="muted">Do not add these R totals together. FAST, ALPHA, HOT, and TESTING overlap the same sessions on the same bars. LIVE = webhook attached. SHADOW = same ALPHA book, no orders. DRY = paper only.</p>
+    <table>
+      <thead><tr><th>Profile</th><th>Kind</th><th>Trades</th><th>WR</th><th>PF</th><th>R</th><th>Max DD</th><th>CL</th><th>USD*</th><th>Span</th></tr></thead>
+      <tbody>
+        <tr>
+      <td>TESTING</td>
+      <td class="mono">DRY</td>
+      <td class="mono">441</td>
+      <td>39.0%</td>
+      <td class="mono">0.84</td>
+      <td class="mono nogo">-43.29</td>
+      <td class="mono nogo">-52.27</td>
+      <td class="mono">11</td>
+      <td class="mono nogo">$-12,951</td>
+      <td class="muted">2026-04-05 → 2026-09-23</td>
+    </tr><tr>
+      <td>FAST</td>
+      <td class="mono">DRY</td>
+      <td class="mono">296</td>
+      <td>39.2%</td>
+      <td class="mono">1.03</td>
+      <td class="mono go">+5.59</td>
+      <td class="mono nogo">-23.60</td>
+      <td class="mono">9</td>
+      <td class="mono go">$5,945</td>
+      <td class="muted">2026-03-09 → 2026-09-23</td>
+    </tr><tr>
+      <td>HOT_REGIME_V1</td>
+      <td class="mono">DRY</td>
+      <td class="mono">262</td>
+      <td>39.3%</td>
+      <td class="mono">1.02</td>
+      <td class="mono go">+2.84</td>
+      <td class="mono nogo">-22.18</td>
+      <td class="mono">11</td>
+      <td class="mono nogo">$-6,527</td>
+      <td class="muted">2026-05-04 → 2026-09-23</td>
+    </tr><tr>
+      <td>FAST_V2</td>
+      <td class="mono">DRY</td>
+      <td class="mono">218</td>
+      <td>45.4%</td>
+      <td class="mono">0.92</td>
+      <td class="mono nogo">-9.08</td>
+      <td class="mono nogo">-17.52</td>
+      <td class="mono">5</td>
+      <td class="mono nogo">$-208</td>
+      <td class="muted">2026-03-09 → 2026-09-23</td>
+    </tr><tr>
+      <td>ALPHA_V1-A</td>
+      <td class="mono">LIVE</td>
+      <td class="mono">167</td>
+      <td>50.3%</td>
+      <td class="mono">1.21</td>
+      <td class="mono go">+16.75</td>
+      <td class="mono nogo">-7.39</td>
+      <td class="mono">5</td>
+      <td class="mono go">$36.43</td>
+      <td class="muted">2026-04-05 → 2026-09-22</td>
+    </tr><tr>
+      <td>FAST_V1.1</td>
+      <td class="mono">DRY</td>
+      <td class="mono">159</td>
+      <td>49.7%</td>
+      <td class="mono">1.14</td>
+      <td class="mono go">+10.98</td>
+      <td class="mono nogo">-8.21</td>
+      <td class="mono">5</td>
+      <td class="mono go">$1,371</td>
+      <td class="muted">2026-03-31 → 2026-09-23</td>
+    </tr><tr>
+      <td>ALPHA_V1-B</td>
+      <td class="mono">SHADOW</td>
+      <td class="mono">62</td>
+      <td>48.4%</td>
+      <td class="mono">1.18</td>
+      <td class="mono go">+5.48</td>
+      <td class="mono nogo">-5.24</td>
+      <td class="mono">5</td>
+      <td class="mono go">$1,051</td>
+      <td class="muted">2026-07-24 → 2026-09-22</td>
+    </tr><tr>
+      <td>FAST_V2.1</td>
+      <td class="mono">DRY</td>
+      <td class="mono">42</td>
+      <td>47.6%</td>
+      <td class="mono">0.90</td>
+      <td class="mono nogo">-2.10</td>
+      <td class="mono nogo">-6.98</td>
+      <td class="mono">7</td>
+      <td class="mono nogo">$-1,767</td>
+      <td class="muted">2026-04-01 → 2026-09-15</td>
+    </tr><tr>
+      <td>ALPHA_V1-ES-NY-ATH-SHADOW</td>
+      <td class="mono">DRY</td>
+      <td class="mono">16</td>
+      <td>43.8%</td>
+      <td class="mono">1.22</td>
+      <td class="mono go">+2.00</td>
+      <td class="mono nogo">-3.50</td>
+      <td class="mono">3</td>
+      <td class="mono ">—</td>
+      <td class="muted">2026-05-11 → 2026-07-22</td>
+    </tr><tr>
+      <td>SLOW</td>
+      <td class="mono">DRY</td>
+      <td class="mono">14</td>
+      <td>14.3%</td>
+      <td class="mono">0.17</td>
+      <td class="mono nogo">-6.60</td>
+      <td class="mono nogo">-6.60</td>
+      <td class="mono">3</td>
+      <td class="mono ">—</td>
+      <td class="muted">2026-03-09 → 2026-04-02</td>
+    </tr><tr>
+      <td>GENERAL_V1</td>
+      <td class="mono">DRY</td>
+      <td class="mono">1</td>
+      <td>0.0%</td>
+      <td class="mono">0.00</td>
+      <td class="mono nogo">-1.00</td>
+      <td class="mono nogo">-1.00</td>
+      <td class="mono">1</td>
+      <td class="mono ">—</td>
+      <td class="muted">2026-04-01 → 2026-04-01</td>
+    </tr><tr>
+      <td>general_v1</td>
+      <td class="mono">DRY</td>
+      <td class="mono">1</td>
+      <td>0.0%</td>
+      <td class="mono">0.00</td>
+      <td class="mono nogo">-1.00</td>
+      <td class="mono nogo">-1.00</td>
+      <td class="mono">1</td>
+      <td class="mono ">—</td>
+      <td class="muted">2026-03-29 → 2026-03-29</td>
+    </tr>
+      </tbody>
+    </table>
+    <p class="note">*USD is incomplete except where usd_n is close to trade count. TESTING’s −$13k is paper mark-to-model at $350–$400 risk, not a live account. FAST’s +$6k vs +5.6R is the same caveat in the other direction.</p>
+
+    <h2>Monthly R by profile</h2>
+    <table>
+      <thead><tr><th>Month</th><th>TESTING</th><th>FAST</th><th>HOT_REGIME_V1</th><th>FAST_V2</th><th>ALPHA_V1-A</th><th>FAST_V1.1</th><th>ALPHA_V1-B</th><th>FAST_V2.1</th><th>ALPHA_V1-ES-NY-ATH-SHADOW</th><th>SLOW</th></tr></thead>
+      <tbody>
+        <tr><td>2026-03</td><td class='muted'>—</td><td class='mono nogo'>-3.0 <span class='muted'>n=31</span></td><td class='muted'>—</td><td class='mono nogo'>-2.7 <span class='muted'>n=22</span></td><td class='muted'>—</td><td class='mono go'>+0.5 <span class='muted'>n=1</span></td><td class='muted'>—</td><td class='muted'>—</td><td class='muted'>—</td><td class='mono nogo'>-4.6 <span class='muted'>n=12</span></td></tr><tr><td>2026-04</td><td class='mono nogo'>-1.5 <span class='muted'>n=19</span></td><td class='mono nogo'>-10.9 <span class='muted'>n=39</span></td><td class='muted'>—</td><td class='mono nogo'>-8.4 <span class='muted'>n=34</span></td><td class='mono nogo'>-1.3 <span class='muted'>n=18</span></td><td class='mono nogo'>-4.1 <span class='muted'>n=23</span></td><td class='muted'>—</td><td class='mono nogo'>-1.8 <span class='muted'>n=7</span></td><td class='muted'>—</td><td class='mono nogo'>-2.0 <span class='muted'>n=2</span></td></tr><tr><td>2026-05</td><td class='mono nogo'>-0.4 <span class='muted'>n=82</span></td><td class='mono go'>+10.3 <span class='muted'>n=56</span></td><td class='mono nogo'>-2.8 <span class='muted'>n=64</span></td><td class='mono nogo'>-4.2 <span class='muted'>n=39</span></td><td class='mono go'>+11.9 <span class='muted'>n=38</span></td><td class='mono go'>+4.8 <span class='muted'>n=33</span></td><td class='muted'>—</td><td class='mono go'>+1.7 <span class='muted'>n=15</span></td><td class='mono go'>+3.0 <span class='muted'>n=4</span></td><td class='muted'>—</td></tr><tr><td>2026-06</td><td class='mono nogo'>-13.4 <span class='muted'>n=94</span></td><td class='mono nogo'>-4.2 <span class='muted'>n=49</span></td><td class='mono go'>+3.9 <span class='muted'>n=44</span></td><td class='mono go'>+3.1 <span class='muted'>n=33</span></td><td class='mono nogo'>-0.6 <span class='muted'>n=30</span></td><td class='mono go'>+4.2 <span class='muted'>n=29</span></td><td class='muted'>—</td><td class='mono nogo'>-1.0 <span class='muted'>n=5</span></td><td class='mono go'>+1.5 <span class='muted'>n=8</span></td><td class='muted'>—</td></tr><tr><td>2026-07</td><td class='mono go'>+6.2 <span class='muted'>n=98</span></td><td class='mono nogo'>-12.3 <span class='muted'>n=46</span></td><td class='mono go'>+4.6 <span class='muted'>n=46</span></td><td class='mono go'>+5.1 <span class='muted'>n=35</span></td><td class='mono nogo'>-0.1 <span class='muted'>n=25</span></td><td class='mono nogo'>-1.7 <span class='muted'>n=23</span></td><td class='mono nogo'>-1.4 <span class='muted'>n=6</span></td><td class='mono go'>+1.1 <span class='muted'>n=7</span></td><td class='mono nogo'>-2.5 <span class='muted'>n=4</span></td><td class='muted'>—</td></tr><tr><td>2026-08</td><td class='mono nogo'>-20.0 <span class='muted'>n=79</span></td><td class='mono go'>+18.3 <span class='muted'>n=46</span></td><td class='mono nogo'>-3.4 <span class='muted'>n=53</span></td><td class='mono nogo'>-3.1 <span class='muted'>n=31</span></td><td class='mono nogo'>-0.4 <span class='muted'>n=33</span></td><td class='mono go'>+3.9 <span class='muted'>n=30</span></td><td class='mono nogo'>-0.4 <span class='muted'>n=33</span></td><td class='mono nogo'>-3.8 <span class='muted'>n=5</span></td><td class='muted'>—</td><td class='muted'>—</td></tr><tr><td>2026-09</td><td class='mono nogo'>-14.3 <span class='muted'>n=69</span></td><td class='mono go'>+7.4 <span class='muted'>n=29</span></td><td class='mono go'>+0.4 <span class='muted'>n=55</span></td><td class='mono go'>+1.1 <span class='muted'>n=24</span></td><td class='mono go'>+7.3 <span class='muted'>n=23</span></td><td class='mono go'>+3.4 <span class='muted'>n=20</span></td><td class='mono go'>+7.3 <span class='muted'>n=23</span></td><td class='mono go'>+1.8 <span class='muted'>n=3</span></td><td class='muted'>—</td><td class='muted'>—</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Sleeves with ≥20 trades, ranked by R</h2>
+    <table>
+      <thead><tr><th>Profile</th><th>Session</th><th>Trades</th><th>WR</th><th>PF</th><th>R</th><th>DD</th></tr></thead>
+      <tbody>
+        <tr>
+      <td>HOT_REGIME_V1</td>
+      <td>NQ_Asia</td>
+      <td class="mono">64</td>
+      <td>54.7%</td>
+      <td class="mono">2.01</td>
+      <td class="mono go">+29.04</td>
+      <td class="mono nogo">-3.60</td>
+    </tr><tr>
+      <td>ALPHA_V1-A</td>
+      <td>NQ_NY</td>
+      <td class="mono">22</td>
+      <td>54.5%</td>
+      <td class="mono">1.93</td>
+      <td class="mono go">+9.25</td>
+      <td class="mono nogo">-4.30</td>
+    </tr><tr>
+      <td>FAST</td>
+      <td>NQ_NY</td>
+      <td class="mono">30</td>
+      <td>53.3%</td>
+      <td class="mono">1.70</td>
+      <td class="mono go">+9.05</td>
+      <td class="mono nogo">-5.30</td>
+    </tr><tr>
+      <td>ALPHA_V1-A</td>
+      <td>ES_Asia</td>
+      <td class="mono">66</td>
+      <td>56.1%</td>
+      <td class="mono">1.24</td>
+      <td class="mono go">+6.88</td>
+      <td class="mono nogo">-4.00</td>
+    </tr><tr>
+      <td>FAST_V2</td>
+      <td>NQ_NY</td>
+      <td class="mono">63</td>
+      <td>52.4%</td>
+      <td class="mono">1.22</td>
+      <td class="mono go">+6.26</td>
+      <td class="mono nogo">-5.50</td>
+    </tr><tr>
+      <td>FAST</td>
+      <td>ES_Asia</td>
+      <td class="mono">76</td>
+      <td>51.3%</td>
+      <td class="mono">1.18</td>
+      <td class="mono go">+5.74</td>
+      <td class="mono nogo">-4.00</td>
+    </tr><tr>
+      <td>FAST_V1.1</td>
+      <td>ES_Asia</td>
+      <td class="mono">67</td>
+      <td>55.2%</td>
+      <td class="mono">1.19</td>
+      <td class="mono go">+5.74</td>
+      <td class="mono nogo">-4.00</td>
+    </tr><tr>
+      <td>TESTING</td>
+      <td>NQ_NY_Short</td>
+      <td class="mono">22</td>
+      <td>54.5%</td>
+      <td class="mono">1.53</td>
+      <td class="mono go">+5.08</td>
+      <td class="mono nogo">-2.92</td>
+    </tr><tr>
+      <td>ALPHA_V1-B</td>
+      <td>ES_Asia</td>
+      <td class="mono">25</td>
+      <td>60.0%</td>
+      <td class="mono">1.46</td>
+      <td class="mono go">+4.63</td>
+      <td class="mono nogo">-4.00</td>
+    </tr><tr>
+      <td>FAST</td>
+      <td>NQ_Asia_LSI</td>
+      <td class="mono">20</td>
+      <td>55.0%</td>
+      <td class="mono">1.40</td>
+      <td class="mono go">+3.59</td>
+      <td class="mono nogo">-2.00</td>
+    </tr><tr>
+      <td>TESTING</td>
+      <td>ES_NY_ATH_GATE</td>
+      <td class="mono">25</td>
+      <td>48.0%</td>
+      <td class="mono">1.23</td>
+      <td class="mono go">+3.00</td>
+      <td class="mono nogo">-3.50</td>
+    </tr><tr>
+      <td>TESTING</td>
+      <td>SI_Asia</td>
+      <td class="mono">34</td>
+      <td>41.2%</td>
+      <td class="mono">1.09</td>
+      <td class="mono go">+1.75</td>
+      <td class="mono nogo">-8.25</td>
+    </tr><tr>
+      <td>FAST</td>
+      <td>ES_NY</td>
+      <td class="mono">37</td>
+      <td>51.4%</td>
+      <td class="mono">1.08</td>
+      <td class="mono go">+1.50</td>
+      <td class="mono nogo">-4.00</td>
+    </tr><tr>
+      <td>ALPHA_V1-A</td>
+      <td>NQ_Asia</td>
+      <td class="mono">31</td>
+      <td>38.7%</td>
+      <td class="mono">1.07</td>
+      <td class="mono go">+1.34</td>
+      <td class="mono nogo">-7.00</td>
+    </tr><tr>
+      <td>TESTING</td>
+      <td>H_ORB_SAFE</td>
+      <td class="mono">49</td>
+      <td>49.0%</td>
+      <td class="mono">1.05</td>
+      <td class="mono go">+1.25</td>
+      <td class="mono nogo">-4.75</td>
+    </tr><tr>
+      <td>FAST_V1.1</td>
+      <td>NQ_Asia</td>
+      <td class="mono">32</td>
+      <td>37.5%</td>
+      <td class="mono">1.04</td>
+      <td class="mono go">+0.82</td>
+      <td class="mono nogo">-7.00</td>
+    </tr><tr>
+      <td>FAST_V1.1</td>
+      <td>ES_NY</td>
+      <td class="mono">35</td>
+      <td>48.6%</td>
+      <td class="mono">1.03</td>
+      <td class="mono go">+0.50</td>
+      <td class="mono nogo">-4.00</td>
+    </tr><tr>
+      <td>HOT_REGIME_V1</td>
+      <td>NQ_NY</td>
+      <td class="mono">36</td>
+      <td>36.1%</td>
+      <td class="mono">1.01</td>
+      <td class="mono go">+0.25</td>
+      <td class="mono nogo">-10.00</td>
+    </tr><tr>
+      <td>ALPHA_V1-A</td>
+      <td>ES_NY</td>
+      <td class="mono">34</td>
+      <td>47.1%</td>
+      <td class="mono">1.00</td>
+      <td class="mono ">+0.00</td>
+      <td class="mono nogo">-4.00</td>
+    </tr><tr>
+      <td>FAST_V2.1</td>
+      <td>NQ_Asia</td>
+      <td class="mono">25</td>
+      <td>48.0%</td>
+      <td class="mono">0.96</td>
+      <td class="mono nogo">-0.51</td>
+      <td class="mono nogo">-5.28</td>
+    </tr><tr>
+      <td>FAST_V2</td>
+      <td>NQ_Asia</td>
+      <td class="mono">24</td>
+      <td>45.8%</td>
+      <td class="mono">0.89</td>
+      <td class="mono nogo">-1.31</td>
+      <td class="mono nogo">-3.00</td>
+    </tr><tr>
+      <td>FAST</td>
+      <td>NQ_Asia</td>
+      <td class="mono">38</td>
+      <td>31.6%</td>
+      <td class="mono">0.91</td>
+      <td class="mono nogo">-2.18</td>
+      <td class="mono nogo">-7.00</td>
+    </tr><tr>
+      <td>TESTING</td>
+      <td>GC_Asia</td>
+      <td class="mono">70</td>
+      <td>38.6%</td>
+      <td class="mono">0.91</td>
+      <td class="mono nogo">-4.00</td>
+      <td class="mono nogo">-8.50</td>
+    </tr><tr>
+      <td>FAST</td>
+      <td>NQ_LDN</td>
+      <td class="mono">65</td>
+      <td>16.9%</td>
+      <td class="mono">0.91</td>
+      <td class="mono nogo">-4.86</td>
+      <td class="mono nogo">-18.36</td>
+    </tr><tr>
+      <td>TESTING</td>
+      <td>H_ORB</td>
+      <td class="mono">63</td>
+      <td>44.4%</td>
+      <td class="mono">0.83</td>
+      <td class="mono nogo">-5.75</td>
+      <td class="mono nogo">-12.00</td>
+    </tr><tr>
+      <td>FAST</td>
+      <td>GC_NY</td>
+      <td class="mono">24</td>
+      <td>25.0%</td>
+      <td class="mono">0.63</td>
+      <td class="mono nogo">-6.58</td>
+      <td class="mono nogo">-8.52</td>
+    </tr><tr>
+      <td>HOT_REGIME_V1</td>
+      <td>NQ_NY_LSI</td>
+      <td class="mono">37</td>
+      <td>29.7%</td>
+      <td class="mono">0.54</td>
+      <td class="mono nogo">-8.84</td>
+      <td class="mono nogo">-9.01</td>
+    </tr><tr>
+      <td>TESTING</td>
+      <td>GOLD_X_ABLATED</td>
+      <td class="mono">22</td>
+      <td>31.8%</td>
+      <td class="mono">0.29</td>
+      <td class="mono nogo">-10.07</td>
+      <td class="mono nogo">-10.07</td>
+    </tr><tr>
+      <td>TESTING</td>
+      <td>GOLD_X</td>
+      <td class="mono">22</td>
+      <td>31.8%</td>
+      <td class="mono">0.29</td>
+      <td class="mono nogo">-10.07</td>
+      <td class="mono nogo">-10.07</td>
+    </tr><tr>
+      <td>FAST_V2</td>
+      <td>ES_Asia</td>
+      <td class="mono">116</td>
+      <td>40.5%</td>
+      <td class="mono">0.78</td>
+      <td class="mono nogo">-14.52</td>
+      <td class="mono nogo">-16.68</td>
+    </tr><tr>
+      <td>HOT_REGIME_V1</td>
+      <td>ES_Asia</td>
+      <td class="mono">90</td>
+      <td>35.6%</td>
+      <td class="mono">0.74</td>
+      <td class="mono nogo">-14.86</td>
+      <td class="mono nogo">-20.61</td>
+    </tr><tr>
+      <td>TESTING</td>
+      <td>H_ORB_ABLATED</td>
+      <td class="mono">126</td>
+      <td>31.7%</td>
+      <td class="mono">0.76</td>
+      <td class="mono nogo">-20.02</td>
+      <td class="mono nogo">-31.94</td>
+    </tr>
+      </tbody>
+    </table>
+
+    <h2>How to read this</h2>
+    <ul>
+      <li>This is the full production trade table: 1,679 fills, 2026-03-09 to 2026-09-23.</li>
+      <li>ALPHA_V1-A is the only live-order book. ALPHA_V1-B is a dry clone from late July. Their R matches from August onward.</li>
+      <li>TESTING (Hunter / Gold-X / GC-SI Asia) is the worst paper book: −43R, PF 0.84, DD −52R.</li>
+      <li>HOT_REGIME_V1 NQ Asia is the best single dry sleeve (+29R, PF 2.01) but the rest of that book gives it back.</li>
+      <li>PF 1.21 on 167 live trades is weaker than the 5Y exact replay (PF 1.37). Live sample is still small and path-heavy.</li>
+    </ul>
+    <p class="muted">Source: production <span class="mono">/exec-api/trades/history</span>. Snapshot 2026-09-24 05:34 UTC. Related research: <a href="./STRATEGY_RESULTS_OVERVIEW.html">strategy overview</a>.</p>
+  </div>
+</body>
+</html>

@@ -8,6 +8,12 @@ const RESEARCH_REPORTS = [
     href: "/research-reports/STRATEGY_RESULTS_OVERVIEW.html",
   },
   {
+    id: "live-execution",
+    title: "Live execution results",
+    blurb: "Full production trade history since March 2026. ALPHA_V1-A live vs dry-run books.",
+    href: "/research-reports/LIVE_EXECUTION_RESULTS.html",
+  },
+  {
     id: "council-20260403-083956",
     title: "Prop-firm payout farming",
     blurb: "Original ALPHA_V1 four-leg keep/cut recommendation.",
