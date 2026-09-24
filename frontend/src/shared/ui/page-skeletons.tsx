@@ -3,6 +3,7 @@ import { cn } from "@/shared/utils";
 
 export type BacktestingSkeletonTab =
   | "backtests"
+  | "reports"
   | "saved"
   | "configs"
   | "optimizations"
@@ -191,11 +192,28 @@ function NewsSkeleton() {
   );
 }
 
+function ReportsSkeleton() {
+  return (
+    <div className="grid gap-4 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)]">
+      <div className="rounded-lg border border-border bg-bg-card p-3">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <div key={index} className="border-b border-border py-3 last:border-b-0">
+            <Skeleton className="h-4 w-40 rounded" />
+            <Skeleton className="mt-2 h-3 w-56 rounded" muted />
+          </div>
+        ))}
+      </div>
+      <Skeleton className="min-h-[70vh] rounded-lg" />
+    </div>
+  );
+}
+
 export function BacktestingTabSkeleton({ tab }: { tab: BacktestingSkeletonTab }) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       <HeaderSkeleton subtitle={tab !== "backtests"} />
       {tab === "backtests" && <HistoryWithResultsSkeleton />}
+      {tab === "reports" && <ReportsSkeleton />}
       {tab === "saved" && <HistoryWithResultsSkeleton />}
       {tab === "optimizations" && <HistoryWithResultsSkeleton optimized />}
       {tab === "configs" && <ConfigsSkeleton />}

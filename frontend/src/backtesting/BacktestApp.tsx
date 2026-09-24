@@ -1,10 +1,11 @@
 import { lazy, Suspense, useState } from "react";
 import { BacktestingTabSkeleton } from "@/shared/ui/page-skeletons";
 
-type Tab = "backtests" | "saved" | "configs" | "optimizations" | "coverage" | "risk-engine" | "regime" | "news";
+type Tab = "backtests" | "reports" | "saved" | "configs" | "optimizations" | "coverage" | "risk-engine" | "regime" | "news";
 
 const TAB_LABELS: Record<Tab, string> = {
   backtests: "Backtests",
+  reports: "Reports",
   saved: "Saved",
   configs: "Configs",
   optimizations: "Optimizations",
@@ -16,6 +17,9 @@ const TAB_LABELS: Record<Tab, string> = {
 
 const BacktestDashboard = lazy(() =>
   import("@/backtesting/components/BacktestDashboard").then((module) => ({ default: module.BacktestDashboard })),
+);
+const ReportsDashboard = lazy(() =>
+  import("@/backtesting/components/ReportsDashboard").then((module) => ({ default: module.ReportsDashboard })),
 );
 const SavedStrategiesDashboard = lazy(() =>
   import("@/backtesting/components/SavedStrategiesDashboard").then((module) => ({ default: module.SavedStrategiesDashboard })),
@@ -47,7 +51,7 @@ export function BacktestApp() {
       {/* Tab bar */}
       <div className="gc-section-header px-4 py-2 sm:px-6 lg:px-8">
         <div className="gc-route-tabs mx-auto max-w-7xl">
-          {(["backtests", "saved", "configs", "optimizations", "coverage", "risk-engine", "regime", "news"] as const).map((tab) => (
+          {(["backtests", "reports", "saved", "configs", "optimizations", "coverage", "risk-engine", "regime", "news"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -61,6 +65,7 @@ export function BacktestApp() {
 
       <Suspense fallback={<BacktestingTabSkeleton tab={activeTab} />}>
         {activeTab === "backtests" && <BacktestDashboard />}
+        {activeTab === "reports" && <ReportsDashboard />}
         {activeTab === "saved" && <SavedStrategiesDashboard />}
         {activeTab === "configs" && <ConfigsDashboard />}
         {activeTab === "optimizations" && <OptimizeDashboard />}

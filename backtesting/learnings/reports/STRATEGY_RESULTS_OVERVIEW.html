@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strategy results overview — gat.capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101010;
+      --bg-2: #161515;
+      --card: #181818;
+      --border: #3a3026;
+      --text: #f8e0b8;
+      --muted: #8a765b;
+      --gold: #ecc997;
+      --gold-dim: #b89358;
+      --good: #7fd895;
+      --bad: #ff7664;
+      --warn: #e8c088;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Sora, system-ui, sans-serif;
+      line-height: 1.55;
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { font-size: 2rem; margin: 0 0 8px; letter-spacing: -0.03em; }
+    h2 { font-size: 1.15rem; margin: 36px 0 12px; color: var(--gold); }
+    h3 { font-size: 0.95rem; margin: 20px 0 8px; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); }
+    .lede {
+      font-size: 1.05rem;
+      max-width: 46rem;
+      color: var(--gold);
+    }
+    .hero {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #201818 0%, var(--card) 100%);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .pill {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--gold-dim);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 12px 0 20px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    td.mono, .mono { font-family: "JetBrains Mono", monospace; }
+    .go { color: var(--good); }
+    .nogo { color: var(--bad); }
+    .cond { color: var(--warn); }
+    .grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      margin: 16px 0;
+    }
+    .stat {
+      border: 1px solid var(--border);
+      background: var(--bg-2);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .stat .k { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat .v { font-family: "JetBrains Mono", monospace; font-size: 1.25rem; margin-top: 6px; }
+    a { color: var(--gold); }
+    ul { margin: 0 0 16px 1.2rem; padding: 0; }
+    li { margin: 0 0 6px; }
+    .note {
+      border-left: 3px solid var(--gold-dim);
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="muted mono">gat.capital · research HTML index</p>
+    <h1>Strategy results you can actually open</h1>
+    <p class="lede">Most research lives in Markdown. The HTML set is this overview, nine council reports, and the dashboard equity/trade pages for saved backtests.</p>
+
+    <div class="hero">
+      <h2 style="margin-top:0">Verdict</h2>
+      <p>There is no single “the strategy.” A small ALPHA_V1 NQ/ES book is historically profitable on exact execution replay. Most ORB/LSI variants are NO-GO. Production is LIVE: only <span class="mono">ALPHA_V1-A</span> has a webhook. Everything else on the feed is dry-run.</p>
+      <div class="pills">
+        <span class="pill">exact replay · ALPHA_V1-A last 5Y</span>
+        <span class="pill">+275.1R gross / +213.4R net</span>
+        <span class="pill">PF 1.37 · WR 53.0%</span>
+        <span class="pill">1,461 trades · DD −15.7R</span>
+      </div>
+    </div>
+
+    <h2>ALPHA_V1-A exact 5-year book</h2>
+    <p class="muted">Live-engine replay, local parquet, MNQ/MES fees in the fill. Dashboard ID <span class="mono">bt-exec-exact-alpha-v1-a-last-5y-2021-03-25-to-2026-b56228</span>. Window 2021-03-25 to 2026-03-24. Combined-account path, not separate funded accounts.</p>
+    <div class="grid">
+      <div class="stat"><div class="k">Trades</div><div class="v">1,461</div></div>
+      <div class="stat"><div class="k">Win rate</div><div class="v">53.0%</div></div>
+      <div class="stat"><div class="k">Profit factor</div><div class="v">1.37</div></div>
+      <div class="stat"><div class="k">Gross R</div><div class="v go">+275.1</div></div>
+      <div class="stat"><div class="k">Net R after fees</div><div class="v go">+213.4</div></div>
+      <div class="stat"><div class="k">Max DD</div><div class="v nogo">−15.7R</div></div>
+      <div class="stat"><div class="k">Sharpe</div><div class="v">2.39</div></div>
+      <div class="stat"><div class="k">Calmar</div><div class="v">17.5</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Year</th><th>Trades</th><th>R</th><th>Win rate</th></tr></thead>
+      <tbody>
+        <tr><td>2021</td><td class="mono">230</td><td class="mono go">+15.7</td><td>48.3%</td></tr>
+        <tr><td>2022</td><td class="mono">279</td><td class="mono go">+58.0</td><td>54.1%</td></tr>
+        <tr><td>2023</td><td class="mono">292</td><td class="mono go">+36.9</td><td>51.0%</td></tr>
+        <tr><td>2024</td><td class="mono">300</td><td class="mono go">+51.6</td><td>52.0%</td></tr>
+        <tr><td>2025</td><td class="mono">288</td><td class="mono go">+100.8</td><td>58.7%</td></tr>
+        <tr><td>2026 YTD</td><td class="mono">72</td><td class="mono go">+12.1</td><td>52.8%</td></tr>
+      </tbody>
+    </table>
+    <table>
+      <thead><tr><th>Leg</th><th>Trades</th><th>R</th><th>Win rate</th><th>Avg R</th></tr></thead>
+      <tbody>
+        <tr><td>NQ Asia ORB</td><td class="mono">245</td><td class="mono go">+94.4</td><td>49.0%</td><td class="mono">0.385</td></tr>
+        <tr><td>ES Asia ORB</td><td class="mono">595</td><td class="mono go">+77.4</td><td>55.3%</td><td class="mono">0.130</td></tr>
+        <tr><td>NQ NY HTF-LSI</td><td class="mono">180</td><td class="mono go">+45.4</td><td>56.1%</td><td class="mono">0.252</td></tr>
+        <tr><td>ES NY ORB</td><td class="mono">242</td><td class="mono go">+30.0</td><td>54.1%</td><td class="mono">0.124</td></tr>
+        <tr><td>NQ NY ORB</td><td class="mono">199</td><td class="mono go">+27.9</td><td>46.7%</td><td class="mono">0.140</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Longer exact compare (2016-04-17 to 2026-03-24): combined +445R exact vs +580R research. Last 1Y still +87.7R exact. Report: ALPHA_V1_LIVE_REPLAY_COMPARE_20260503.md.</p>
+
+    <h2>Live production results</h2>
+    <p class="muted">Full engine-fill history from the droplet, 2026-03-09 to 2026-09-23. Open <a href="./LIVE_EXECUTION_RESULTS.html">LIVE_EXECUTION_RESULTS.html</a> for the complete dump. ALPHA_V1-A: 167 trades, 2026-04-05 to 2026-09-22, WR 50.3%, PF 1.21, +16.75R, DD −7.39R.</p>
+
+    <h2>Other HTML pages</h2>
+    <p class="muted">Council reports are decision writeups, not the full experiment archive.</p>
+    <table>
+      <thead><tr><th>Page</th><th>What it covers</th></tr></thead>
+      <tbody>
+        <tr><td><a href="./LIVE_EXECUTION_RESULTS.html">Live execution results</a></td><td>Complete production trade table since 2026-03-09. Live ALPHA_V1-A vs dry FAST / TESTING / HOT_REGIME books.</td></tr>
+        <tr><td><a href="./council-report-20260403-083956.html">2026-04-03 · Prop-firm payout farming</a></td><td>Keep NQ Asia ORB, ES Asia ORB, ES NY ORB, NQ NY LSI. Cut NQ Asia LSI, NQ NY ORB, GC NY ORB. This is the original ALPHA_V1 four-leg recommendation.</td></tr>
+        <tr><td><a href="./council-report-20260403-093017.html">2026-04-03 · Candidate re-evaluation</a></td><td>Second pass over the research candidate list.</td></tr>
+        <tr><td><a href="./council-report-20260403-144421.html">2026-04-03 · Discovery vs ALPHA_V1</a></td><td>Whether discovery legs should replace ALPHA_V1.</td></tr>
+        <tr><td><a href="./council-report-20260403-200758.html">2026-04-03 · ALPHA_V1 &amp; TESTING audit</a></td><td>Config audit of the live/testing profiles.</td></tr>
+        <tr><td><a href="./council-report-20260412-195951.html">2026-04-12 · ORB/LSI next-step allocation</a></td><td>Where to spend the next research cycle.</td></tr>
+        <tr><td><a href="./council-report-20260403-110838.html">2026-04-03 · Discovery candidate evaluation</a></td><td>Promotion / cut calls on discovery rows.</td></tr>
+        <tr><td><a href="./council-report-20260403-103125.html">2026-04-03 · Regime gate implementation</a></td><td>Lookahead and live-gate implementation review.</td></tr>
+        <tr><td><a href="./council-report-20260402-102407.html">2026-04-02 · Regime gate lookahead</a></td><td>Whether regime gates leak future information.</td></tr>
+        <tr><td><a href="./council-report-20260331-221500.html">2026-03-31 · PBO/DSR implementation</a></td><td>Overfitting-gate design (PBO / deflated Sharpe).</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Dashboard pages (interactive, not static HTML)</h2>
+    <ul>
+      <li><strong>Backtesting → Backtests</strong> — equity, stats, and trades for saved runs. This environment has the ALPHA_V1-A last-5Y exact replay loaded.</li>
+      <li><strong>Backtesting → Saved / Optimizations / Coverage / Risk Engine / Regime</strong> — other research surfaces. Remote history needs auth; this local API only seeded the one exact book.</li>
+      <li><strong>Execution</strong> — live/dry status. Production ALPHA_V1-A has a live webhook; other enabled books are dry-run.</li>
+    </ul>
+
+    <h2>GO / NO-GO board (from asset briefs)</h2>
+    <table>
+      <thead><tr><th>Sleeve</th><th>Status</th><th>Read</th></tr></thead>
+      <tbody>
+        <tr><td>NQ Asia continuation R9</td><td class="go">GO</td><td>770 trades, +176.2R, PF 1.42, 0 negative years, 5/5 pipeline. Research GO, not identical to live ALPHA Asia params (rr=6 / tp1=0.3).</td></tr>
+        <tr><td>NQ NY HTF-LSI lag24</td><td class="go">GO / exact</td><td>394 trades, PF 1.47, +82.3R, holdout PF 2.10 on 29 trades.</td></tr>
+        <tr><td>ALPHA_V2 NQ NY gated ORB</td><td class="cond">Dry-run</td><td>2021–2024 exact +27.4 net R; 2025 holdout +9.7R; still positive at 2 extra ticks/side.</td></tr>
+        <tr><td>NQ LDN LSI long</td><td class="go">GO</td><td>5/5 pipeline in the NQ index.</td></tr>
+        <tr><td>RTY NY ORB discovery</td><td class="go">GO</td><td>NY-4 strong; NY-1/NY-2 conditional.</td></tr>
+        <tr><td>CL NY HTF-LSI</td><td class="cond">CONDITIONAL</td><td>First non-NQ HTF-LSI to survive funded holdout; exact parity closed on entries.</td></tr>
+        <tr><td>ES NY HTF-LSI</td><td class="cond">CONDITIONAL</td><td>Alive in discovery; opened holdout was weak.</td></tr>
+        <tr><td>Plain NY ORB seed (NQ/ES/CL)</td><td class="nogo">NO-GO</td><td>Did not clear pre-holdout / PSR-DSR / stress.</td></tr>
+        <tr><td>Most LSI transfers (ES/GC/RTY/SI/YM)</td><td class="nogo">NO-GO</td><td>Funded holdout rejected the frozen shortlists.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>What these pages do not prove</h2>
+    <ul>
+      <li>Future live fills, slippage, or Apex DLL flattening.</li>
+      <li>That generic ORB+FVG is an edge. Most variants fail.</li>
+      <li>That current enabled profiles besides ALPHA_V1-A are sending live orders. They are not.</li>
+      <li>The ~270 Markdown reports under <span class="mono">backtesting/learnings/reports/</span> are not HTML. Open those as source files if you need the long-form packets.</li>
+    </ul>
+  </div>
+</body>
+</html>
